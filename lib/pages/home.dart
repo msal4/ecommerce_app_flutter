@@ -1,0 +1,255 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:jewelry_flutter/constants.dart';
+
+final List<String> imgList = [
+  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+];
+
+class HomePage extends StatefulWidget {
+  final title = "HOME";
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool _menuVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.width / 2;
+
+    return ListView(
+      physics: ClampingScrollPhysics(),
+      children: [
+        Container(
+          decoration: BoxDecoration(gradient: gradient),
+          width: double.infinity,
+          child: Column(
+            children: [
+              Slider(height: height),
+              Padding(
+                padding: const EdgeInsets.only(top: 25, right: 25, left: 25),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _menuVisible = !_menuVisible;
+                        });
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'ALL',
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontFamily: 'BebasNeue',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 30,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Spacer(),
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 50,
+                            child: IconButton(
+                              padding: const EdgeInsets.all(0),
+                              icon: Column(
+                                children: [
+                                  Icon(Icons.view_agenda_outlined),
+                                  Spacer(),
+                                  // Container(
+                                  //   height: 3,
+                                  //   color: Colors.white,
+                                  // )
+                                ],
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 5),
+                            width: 50,
+                            child: IconButton(
+                              padding: const EdgeInsets.all(0),
+                              icon: Column(
+                                children: [
+                                  Icon(Icons.grid_view),
+                                  Spacer(),
+                                  Container(
+                                    height: 3,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Stack(
+          children: [
+            Column(
+              children: [
+                for (int i = 0; i < imgList.length; i++)
+                  Card(
+                    img: imgList[i],
+                    height: height,
+                    marginTop: i == 0 ? 25 : 0,
+                  ),
+              ],
+            ),
+            AnimatedPositioned(
+              duration: Duration(milliseconds: 250),
+              top: _menuVisible ? 0 : -200,
+              right: 0,
+              left: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: horizontalGradient,
+                  color: primaryColor,
+                ),
+                child: Column(
+                  children: [
+                    Container(color: Colors.black.withOpacity(.2), height: 10),
+                    buildListTile(text: 'ALL', selected: true),
+                    buildListTile(text: 'RECENTLY ADDED'),
+                    buildListTile(text: 'MOST POPULAR'),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  ListTile buildListTile({text = 'Unknown', selected = false}) {
+    return ListTile(
+      selected: selected,
+      selectedTileColor: Colors.black.withOpacity(.1),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 25),
+      title: Text(
+        text,
+        style: TextStyle(
+          color: selected ? Colors.white : Colors.white.withOpacity(.6),
+          fontWeight: FontWeight.w500,
+          fontFamily: 'BebasNeue',
+          letterSpacing: 2,
+          fontSize: 25,
+        ),
+      ),
+    );
+  }
+}
+
+class Card extends StatelessWidget {
+  const Card({
+    Key key,
+    @required this.img,
+    @required this.height,
+    this.marginTop = 0,
+  }) : super(key: key);
+
+  final String img;
+  final double height;
+  final double marginTop;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 25, bottom: 25, right: 25, top: marginTop),
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(22),
+            child: Image.network(
+              img,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: height,
+            ),
+          ),
+          Positioned(
+            right: 10,
+            top: 10,
+            child: favoriteBtn(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Slider extends StatelessWidget {
+  const Slider({
+    Key key,
+    @required this.height,
+  }) : super(key: key);
+
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      options: CarouselOptions(
+        autoPlay: true,
+        viewportFraction: 0.9,
+        height: height,
+        enlargeStrategy: CenterPageEnlargeStrategy.height,
+        enlargeCenterPage: true,
+      ),
+      items: [
+        for (final img in imgList)
+          Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(22),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 10,
+                  color: Colors.black.withOpacity(.25),
+                  spreadRadius: 1,
+                )
+              ],
+            ),
+            margin: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
+            child: Image.network(
+              img,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ),
+      ],
+    );
+  }
+}
