@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jewelry_flutter/constants.dart';
+import 'package:jewelry_flutter/widgets/card.dart';
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
@@ -13,80 +13,14 @@ class CategoriesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
-    // final height = size.width / 2;
-
     return GridView.count(
       crossAxisCount: 2,
-      childAspectRatio: 1 / 1.1,
+      childAspectRatio: 1 / 1.3,
       padding: const EdgeInsets.all(10),
       crossAxisSpacing: 10,
       mainAxisSpacing: 10,
       children: [
-        for (final img in imgList)
-          Container(
-            height: double.infinity,
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Stack(
-              children: [
-                Image.network(
-                  img,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Color(0xff333333),
-                          Theme.of(context).bottomAppBarColor
-                        ],
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    child: Text(
-                      'Test Text',
-                      style: TextStyle(
-                        fontFamily: 'PlayfairDisplay',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 10,
-                  top: 10,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(100),
-                    clipBehavior: Clip.hardEdge,
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Icon(
-                          Icons.favorite_border,
-                          color: primaryColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        for (final img in imgList) GridCard(image: img, title: 'Test Category')
       ],
     );
   }
