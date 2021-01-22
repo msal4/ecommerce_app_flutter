@@ -3,4 +3,8 @@ part of 'product_bloc.dart';
 @immutable
 abstract class ProductEvent {}
 
-class FetchProducts extends ProductEvent {}
+class FetchProducts extends ProductEvent {
+  FetchProducts({this.show});
+
+  final String show;
+}

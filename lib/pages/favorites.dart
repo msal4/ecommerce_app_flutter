@@ -1,122 +1,117 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jewelry_flutter/bloc/favorite/favorite_bloc.dart';
 
 import '../constants.dart';
 
-class FavoritesPage extends StatelessWidget {
+class FavoritesPage extends StatefulWidget {
   final title = "FAVORITES";
+
+  @override
+  _FavoritesPageState createState() => _FavoritesPageState();
+}
+
+class _FavoritesPageState extends State<FavoritesPage> {
+  @override
+  void initState() {
+    context.bloc<FavoriteBloc>().add(FetchFavorites());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.width / 1.7;
 
-    return ListView.builder(
-      padding: const EdgeInsets.all(15),
-      itemCount: 10,
-      itemBuilder: (context, index) => Container(
-        margin: const EdgeInsets.only(bottom: 20),
-        height: height,
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          children: [
-            Flexible(
-              child: Stack(
-                children: [
-                  Image.network(
-                    "http://dashboard.hayderalkhafaje.com/images/J3t3i3I3O3.png",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                  Positioned(
-                    bottom: 15,
-                    left: 15,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
-                      child: Text(
-                        '4H AGO',
-                        style: TextStyle(
-                          color: Colors.grey.shade700,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
+    return BlocBuilder<FavoriteBloc, FavoriteState>(builder: (context, state) {
+      if (state is FavoriteLoading) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      if (state is FavoriteError) {
+        return Center(child: Text(state.error.message));
+      }
+
+      if (state is FavoritesLoaded) {
+        final favorites = state.favorites;
+        print(favorites[0].images[0].imagePath);
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(15),
+          itemCount: favorites.length,
+          itemBuilder: (context, index) {
+            final item = favorites[index];
+
+            return Container(
+              margin: const EdgeInsets.only(bottom: 20),
+              height: height,
+              clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xff333333),
-                    Theme.of(context).bottomAppBarColor
-                  ],
-                ),
+                borderRadius: BorderRadius.circular(20),
               ),
-              padding: const EdgeInsets.all(15),
-              child: Row(
+              child: Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          fontFamily: 'BebasNeue',
-                          letterSpacing: 2.5,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 25,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Text(
-                          "#GOLD #MSAL #GOD",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1,
-                            fontSize: 11,
-                            color: secondaryColor,
-                          ),
-                        ),
-                      ),
-                    ],
+                  Flexible(
+                    child: Image.network(
+                      item.images.length > 0 ? item.images[0].imagePath : '',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
                   ),
-                  Spacer(),
-                  Material(
-                    borderRadius: BorderRadius.circular(100),
-                    clipBehavior: Clip.hardEdge,
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Icon(
-                          Icons.favorite,
-                          color: secondaryColor,
-                        ),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xff333333),
+                          Theme.of(context).bottomAppBarColor
+                        ],
                       ),
                     ),
-                  )
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.itemName,
+                              style: TextStyle(
+                                fontFamily: 'BebasNeue',
+                                letterSpacing: 2.5,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 25,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        Material(
+                          borderRadius: BorderRadius.circular(100),
+                          clipBehavior: Clip.hardEdge,
+                          color: Colors.white,
+                          child: InkWell(
+                            onTap: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Icon(
+                                Icons.favorite,
+                                color: secondaryColor,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            );
+          },
+        );
+      }
+      return SizedBox();
+    });
   }
 }

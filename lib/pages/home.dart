@@ -4,16 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jewelry_flutter/bloc/product/product_bloc.dart';
 import 'package:jewelry_flutter/bloc/slider/slider_bloc.dart';
 import 'package:jewelry_flutter/constants.dart';
+import 'package:jewelry_flutter/models/product.dart';
 import 'package:jewelry_flutter/models/slider.dart';
 import 'package:jewelry_flutter/pages/product.dart';
 import 'package:jewelry_flutter/widgets/card.dart';
-
-final List<String> imgList = [
-  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-];
 
 class HomePage extends StatefulWidget {
   final title = "HOME";
@@ -27,17 +21,22 @@ enum _ViewMode { grid, list }
 class _HomePageState extends State<HomePage> {
   bool _menuVisible = false;
   _ViewMode _viewMode = _ViewMode.list;
+  String _show = 'all';
+  String _currentShowTitle = 'ALL';
 
   @override
   void initState() {
-    context.bloc<ProductBloc>().add(FetchProducts());
     context.bloc<SliderBloc>().add(FetchSliders());
+    context.bloc<ProductBloc>().add(FetchProducts(show: _show));
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  void getProducts(String show, String currentTitle) {
+    context.bloc<ProductBloc>().add(FetchProducts(show: _show));
+    setState(() {
+      _currentShowTitle = currentTitle;
+      _show = show;
+    });
   }
 
   @override
@@ -54,13 +53,14 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               BlocBuilder<SliderBloc, SliderState>(builder: (context, state) {
-                print(state);
                 if (state is SliderLoading) {
                   return Align(
                     alignment: Alignment.topCenter,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 50.0, horizontal: 25),
+                        vertical: 50.0,
+                        horizontal: 25,
+                      ),
                       child: CircularProgressIndicator(),
                     ),
                   );
@@ -69,7 +69,9 @@ class _HomePageState extends State<HomePage> {
                 if (state is SliderError) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 50.0, horizontal: 25),
+                      vertical: 50.0,
+                      horizontal: 25,
+                    ),
                     child: Text(state.error.message),
                   );
                 }
@@ -95,9 +97,9 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            'ALL',
+                            _currentShowTitle,
                             style: TextStyle(
-                              fontSize: 40,
+                              fontSize: 30,
                               fontFamily: 'BebasNeue',
                               fontWeight: FontWeight.w500,
                             ),
@@ -207,13 +209,9 @@ class _HomePageState extends State<HomePage> {
                             height: height,
                             marginTop: i == 0 ? 25 : 0,
                             onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ProductPage(),
-                                ),
-                              );
+                              navigateToProduct(context, state.products[i]);
                             },
-                          )
+                          ),
                       ],
                     )
                   else
@@ -239,6 +237,10 @@ class _HomePageState extends State<HomePage> {
                                 ? product.images[0].imagePath
                                 : '',
                             title: product.itemName,
+                            subtitle: product.categoryName,
+                            onPressed: () {
+                              navigateToProduct(context, product);
+                            },
                           );
                         },
                       ),
@@ -257,9 +259,24 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Container(
                               color: Colors.black.withOpacity(.2), height: 10),
-                          buildListTile(text: 'ALL', selected: true),
-                          buildListTile(text: 'RECENTLY ADDED'),
-                          buildListTile(text: 'MOST POPULAR'),
+                          buildListTile(
+                              text: 'ALL',
+                              selected: _show == 'all',
+                              onPressed: () {
+                                getProducts('all', 'ALL');
+                              }),
+                          buildListTile(
+                              text: 'RECENTLY ADDED',
+                              selected: _show == 'recently',
+                              onPressed: () {
+                                getProducts('recently', 'RECENTLY ADDED');
+                              }),
+                          buildListTile(
+                              text: 'MOST POPULAR',
+                              selected: _show == 'most',
+                              onPressed: () {
+                                getProducts('most', 'MOST POPULAR');
+                              }),
                         ],
                       ),
                     ),
@@ -274,8 +291,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  ListTile buildListTile({text = 'Unknown', selected = false}) {
+  void navigateToProduct(BuildContext context, Product product) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => ProductPage(),
+          settings: RouteSettings(arguments: product)),
+    );
+  }
+
+  ListTile buildListTile(
+      {text = 'Unknown', selected = false, VoidCallback onPressed}) {
     return ListTile(
+      onTap: onPressed,
       selected: selected,
       selectedTileColor: Colors.black.withOpacity(.1),
       contentPadding: const EdgeInsets.symmetric(horizontal: 25),

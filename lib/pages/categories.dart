@@ -1,27 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jewelry_flutter/bloc/category/category_bloc.dart';
+import 'package:jewelry_flutter/pages/sub_categories.dart';
 import 'package:jewelry_flutter/widgets/card.dart';
 
-final List<String> imgList = [
-  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-];
-
-class CategoriesPage extends StatelessWidget {
+class CategoriesPage extends StatefulWidget {
   final title = "CATEGORIES";
 
   @override
+  _CategoriesPageState createState() => _CategoriesPageState();
+}
+
+class _CategoriesPageState extends State<CategoriesPage> {
+  @override
+  initState() {
+    context.bloc<CategoryBloc>().add(FetchCategories());
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      childAspectRatio: 1 / 1.3,
-      padding: const EdgeInsets.all(10),
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      children: [
-        for (final img in imgList) GridCard(image: img, title: 'Test Category')
-      ],
-    );
+    return BlocBuilder<CategoryBloc, CategoryState>(builder: (context, state) {
+      if (state is CategoryLoading) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      if (state is CategoryError) {
+        return Center(child: Text(state.error.message));
+      }
+
+      if (state is CategoriesLoaded) {
+        return GridView.count(
+          crossAxisCount: 2,
+          childAspectRatio: 1 / 1.3,
+          padding: const EdgeInsets.all(10),
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          children: [
+            for (final category in state.categories)
+              GridCard(
+                image: category.categoryImage,
+                title: category.categoryName,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SubCategoriesPage(),
+                      settings: RouteSettings(arguments: category.idCategory),
+                    ),
+                  );
+                },
+              )
+          ],
+        );
+      }
+
+      return SizedBox();
+    });
   }
 }

@@ -19,10 +19,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   Stream<ProductState> mapEventToState(
     ProductEvent event,
   ) async* {
+    print(event);
     if (event is FetchProducts) {
       yield ProductLoading();
       try {
-        final products = await _service.getProducts();
+        final products = await _service.getProducts(show: event.show);
         yield ProductsLoaded(products: products);
       } on SocketException {
         yield ProductError(error: NoInternetException('No Internet'));
@@ -32,7 +33,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         yield ProductError(
             error: InvalidFormatException('Invalid Response Format'));
       } catch (e) {
-        print(e);
         yield ProductError(error: UnknownException('Unknown Error'));
       }
     }

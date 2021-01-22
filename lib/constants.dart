@@ -17,9 +17,9 @@ const horizontalGradient = LinearGradient(
 );
 
 shadow() => BoxShadow(
-      color: Colors.black.withOpacity(.15),
+      color: Colors.black.withOpacity(.25),
       blurRadius: 15,
-      offset: const Offset(0.0, 20),
+      offset: const Offset(0.0, 15),
     );
 
 favoriteBtn() => Container(
@@ -37,6 +37,19 @@ favoriteBtn() => Container(
               color: primaryColor,
             ),
           ),
+        ),
+      ),
+    );
+
+buildAppBar({title = 'TITLE'}) => AppBar(
+      elevation: 0,
+      centerTitle: true,
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 2.5,
         ),
       ),
     );

@@ -1,13 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jewelry_flutter/bloc/favorite/favorite_bloc.dart';
 import 'package:jewelry_flutter/constants.dart';
+import 'package:jewelry_flutter/models/product.dart';
+import 'package:photo_view/photo_view.dart';
 
-final List<String> imgList = [
-  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-];
+import '../service.dart';
 
 class ProductPage extends StatefulWidget {
   @override
@@ -17,18 +16,29 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   final _carouselController = CarouselController();
 
+  final _service = Service();
+
   int _currentImageIndex = 0;
+  FavoriteBloc _favoriteBloc;
+
+  @override
+  void initState() {
+    _favoriteBloc = context.bloc<FavoriteBloc>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.width / 1.2;
+
+    final product = ModalRoute.of(context).settings.arguments as Product;
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'PRODUCT',
+          product.itemName.toUpperCase(),
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.bold,
@@ -39,7 +49,7 @@ class _ProductPageState extends State<ProductPage> {
           Row(
             children: [
               Text(
-                '120',
+                product.itemLike.toString(),
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
@@ -49,7 +59,10 @@ class _ProductPageState extends State<ProductPage> {
               IconButton(
                 color: secondaryColor,
                 icon: Icon(Icons.favorite_rounded),
-                onPressed: () {},
+                onPressed: () async {
+                  await _service.addFavorite(
+                      itemId: product.idItem, itemLikes: product.itemLike);
+                },
               ),
             ],
           )
@@ -73,12 +86,10 @@ class _ProductPageState extends State<ProductPage> {
                         });
                       }),
                   items: [
-                    for (final img in imgList)
-                      Image.network(
-                        img,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
+                    for (final img in product.images)
+                      PhotoView(
+                        tightMode: true,
+                        imageProvider: NetworkImage(img.imagePath),
                       ),
                   ],
                 ),
@@ -89,7 +100,7 @@ class _ProductPageState extends State<ProductPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        for (int i = 0; i < imgList.length; i++)
+                        for (int i = 0; i < product.images.length; i++)
                           GestureDetector(
                             onTap: () {
                               _carouselController.animateToPage(i);
@@ -120,7 +131,7 @@ class _ProductPageState extends State<ProductPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Immanuel',
+                  product.itemName,
                   style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 35),
                 ),
                 SizedBox(height: 5),
@@ -128,7 +139,7 @@ class _ProductPageState extends State<ProductPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'PHOTOGRAPHY',
+                      product.categoryName,
                       style: TextStyle(
                         fontFamily: 'BebasNeue',
                         fontSize: 15,
@@ -139,7 +150,7 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      '7 OCT, 2017',
+                      product.itemDate,
                       style: TextStyle(
                         fontFamily: 'BebasNeue',
                         color: Colors.white.withOpacity(.5),
@@ -151,8 +162,7 @@ class _ProductPageState extends State<ProductPage> {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  '''.supmet eitselom des alugil ,murtur cenoD .ucra teeroal susruc ,di sore ue sisilicaf ,tse euqen maN
-.otsuj susruc des siuD .sucal tege euqitsirt ,di ainical tege susruc ,mauq rolod nI .repmes mudnebib tirerdneh deS .sore eitselom eativ naeneA''',
+                  product.itemDescription,
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.white.withOpacity(.7),
@@ -165,13 +175,15 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'CAMERA',
+                          'GOLD CALIBER',
                           style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w500),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          'Nikon D90',
+                          product.itemQuality.toString(),
                           style: TextStyle(
                             fontFamily: 'PlayfairDisplay',
                             letterSpacing: 2,
@@ -186,13 +198,13 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'CAMERA',
+                          'WEIGHT',
                           style: TextStyle(
                               fontSize: 12, fontWeight: FontWeight.w500),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          'Nikon D90',
+                          product.itemQuantity.toString(),
                           style: TextStyle(
                             fontFamily: 'PlayfairDisplay',
                             letterSpacing: 2,
