@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 const _zoom = 20.0;
 
 class MapPage extends StatefulWidget {
-  final title = 'MAP';
+  final title = 'LOCATIONS';
   @override
   _MapPageState createState() => _MapPageState();
 }
@@ -235,13 +236,14 @@ class _MapPageState extends State<MapPage> {
                                 currentLocation.lang,
                               ),
                             ),
+                            zoomControlsEnabled: false,
                             myLocationButtonEnabled: false,
                             onMapCreated: (GoogleMapController controller) {
                               _controller.complete(controller);
                             },
                           ),
                           Positioned(
-                            bottom: 45,
+                            bottom: Platform.isIOS ? 45 : 60,
                             left: 10,
                             child: Container(
                               padding: const EdgeInsets.symmetric(

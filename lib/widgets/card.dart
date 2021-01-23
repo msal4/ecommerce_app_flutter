@@ -95,3 +95,47 @@ class GridCard extends StatelessWidget {
     );
   }
 }
+
+class Card extends StatelessWidget {
+  const Card({
+    Key key,
+    @required this.img,
+    @required this.height,
+    this.marginTop = 0,
+    this.onPressed,
+  }) : super(key: key);
+
+  final String img;
+  final double height;
+  final double marginTop;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        margin:
+            EdgeInsets.only(left: 25, bottom: 25, right: 25, top: marginTop),
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(22),
+              child: Image.network(
+                img,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: height,
+              ),
+            ),
+            Positioned(
+              right: 10,
+              top: 10,
+              child: favoriteBtn(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

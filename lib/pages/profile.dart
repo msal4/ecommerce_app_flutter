@@ -40,13 +40,14 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: const EdgeInsets.all(25.0),
               child: SvgPicture.asset(
                 'assets/svg/logo.svg',
-                height: 50,
+                height: 60,
                 color: secondaryColor,
               ),
             ),
+            SizedBox(height: 10),
             Container(
               padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 25),
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: horizontalGradient,
@@ -108,45 +109,65 @@ class _ProfilePageState extends State<ProfilePage> {
                       state.profile.email,
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
-                  )
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'FOLLOW US ON',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.w600,
+                      color: secondaryColor,
+                      fontSize: 12,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          'assets/svg/snapchat.svg',
+                          color: secondaryColor,
+                        ),
+                        onPressed: () {
+                          launch(state.profile.snapchat);
+                        },
+                      ),
+                      SizedBox(width: 20),
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          'assets/svg/whatsapp.svg',
+                          color: secondaryColor,
+                        ),
+                        onPressed: () {
+                          launch('tel:${state.profile.whats}');
+                        },
+                      ),
+                      SizedBox(width: 20),
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          'assets/svg/instagram.svg',
+                          color: secondaryColor,
+                        ),
+                        onPressed: () {
+                          launch(state.profile.instagram);
+                        },
+                      ),
+                      SizedBox(width: 20),
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          'assets/svg/facebook.svg',
+                          color: secondaryColor,
+                        ),
+                        onPressed: () {
+                          launch(state.profile.facebook);
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: SvgPicture.asset(
-                    'assets/svg/snapchat.svg',
-                    color: secondaryColor,
-                  ),
-                  onPressed: () {},
-                ),
-                SizedBox(width: 20),
-                IconButton(
-                  icon: SvgPicture.asset(
-                    'assets/svg/whatsapp.svg',
-                    color: secondaryColor,
-                  ),
-                  onPressed: () {},
-                ),
-                SizedBox(width: 20),
-                IconButton(
-                  icon: SvgPicture.asset(
-                    'assets/svg/instagram.svg',
-                    color: secondaryColor,
-                  ),
-                  onPressed: () {},
-                ),
-                SizedBox(width: 20),
-                IconButton(
-                  icon: SvgPicture.asset(
-                    'assets/svg/facebook.svg',
-                    color: secondaryColor,
-                  ),
-                  onPressed: () {},
-                ),
-              ],
             ),
           ],
         );

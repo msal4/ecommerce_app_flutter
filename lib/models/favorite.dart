@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:jewelry_flutter/models/image.dart';
+
 class Favorite {
   Favorite({
     this.itemId,
@@ -37,7 +39,7 @@ class Favorite {
   final int idSub;
   final String macAddress;
   final int idFavorites;
-  final List<Image> images;
+  final List<ProductImage> images;
 
   factory Favorite.fromJson(String str) => Favorite.fromMap(json.decode(str));
 
@@ -60,7 +62,8 @@ class Favorite {
         idSub: json["idSub"],
         macAddress: json["macAddress"],
         idFavorites: json["idFavorites"],
-        images: List<Image>.from(json["images"].map((x) => Image.fromMap(x))),
+        images: List<ProductImage>.from(
+            json["images"].map((x) => ProductImage.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -81,33 +84,5 @@ class Favorite {
         "macAddress": macAddress,
         "idFavorites": idFavorites,
         "images": List<dynamic>.from(images.map((x) => x.toMap())),
-      };
-}
-
-class Image {
-  Image({
-    this.idImage,
-    this.imagePath,
-    this.itemId,
-  });
-
-  final int idImage;
-  final String imagePath;
-  final int itemId;
-
-  factory Image.fromJson(String str) => Image.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory Image.fromMap(Map<String, dynamic> json) => Image(
-        idImage: json["idImage"],
-        imagePath: json["imagePath"],
-        itemId: json["itemId"],
-      );
-
-  Map<String, dynamic> toMap() => {
-        "idImage": idImage,
-        "imagePath": imagePath,
-        "itemId": itemId,
       };
 }

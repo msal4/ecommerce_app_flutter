@@ -59,6 +59,16 @@ class Service {
     return List<Product>.from(res.data.map((item) => Product.fromMap(item)));
   }
 
+  Future<List<SubCategoryProduct>> getSubCategoryProducts(
+      {@required int subId}) async {
+    final details = await getDeviceDetails();
+
+    final res = await dio.get('/itemSub',
+        queryParameters: {'macAddress': details.identifier, 'subId': subId});
+    return List<SubCategoryProduct>.from(
+        res.data.map((item) => SubCategoryProduct.fromMap(item)));
+  }
+
   Future<List<Slide>> getSliders() async {
     final res = await dio.get('/sliders');
     return List<Slide>.from(res.data.map((item) => Slide.fromMap(item)));

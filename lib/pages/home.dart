@@ -7,7 +7,7 @@ import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/models/product.dart';
 import 'package:jewelry_flutter/models/slider.dart';
 import 'package:jewelry_flutter/pages/product.dart';
-import 'package:jewelry_flutter/widgets/card.dart';
+import 'package:jewelry_flutter/widgets/card.dart' as card;
 
 class HomePage extends StatefulWidget {
   final title = "HOME";
@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   void getProducts(String show, String currentTitle) {
     context.bloc<ProductBloc>().add(FetchProducts(show: _show));
     setState(() {
+      _menuVisible = false;
       _currentShowTitle = currentTitle;
       _show = show;
     });
@@ -43,6 +44,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final height = size.width / 2;
+    final sliderHeight = size.width / 1.7;
 
     return ListView(
       physics: ClampingScrollPhysics(),
@@ -77,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                 }
 
                 if (state is SlidersLoaded) {
-                  return Sliders(slides: state.sliders, height: height);
+                  return Sliders(slides: state.sliders, height: sliderHeight);
                 }
 
                 return SizedBox();
@@ -201,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                     Column(
                       children: [
                         for (int i = 0; i < state.products.length; i++)
-                          Card(
+                          card.Card(
                             img: state.products[i].images != null &&
                                     state.products[i].images.length > 0
                                 ? state.products[i].images[0].imagePath
@@ -231,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           final product = state.products[index];
 
-                          return GridCard(
+                          return card.GridCard(
                             image: product.images != null &&
                                     product.images.length > 0
                                 ? product.images[0].imagePath
@@ -320,50 +322,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class Card extends StatelessWidget {
-  const Card({
-    Key key,
-    @required this.img,
-    @required this.height,
-    this.marginTop = 0,
-    this.onPressed,
-  }) : super(key: key);
-
-  final String img;
-  final double height;
-  final double marginTop;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        margin:
-            EdgeInsets.only(left: 25, bottom: 25, right: 25, top: marginTop),
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(22),
-              child: Image.network(
-                img,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: height,
-              ),
-            ),
-            Positioned(
-              right: 10,
-              top: 10,
-              child: favoriteBtn(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class Sliders extends StatelessWidget {
   const Sliders({
     Key key,
@@ -382,6 +340,7 @@ class Sliders extends StatelessWidget {
         viewportFraction: 0.9,
         height: height,
         enlargeStrategy: CenterPageEnlargeStrategy.height,
+        autoPlayInterval: Duration(seconds: 30),
         enlargeCenterPage: true,
       ),
       items: [

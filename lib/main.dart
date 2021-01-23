@@ -5,6 +5,7 @@ import 'package:jewelry_flutter/bloc/location/location_bloc.dart';
 import 'package:jewelry_flutter/bloc/product/product_bloc.dart';
 import 'package:jewelry_flutter/bloc/profile/profile_bloc.dart';
 import 'package:jewelry_flutter/bloc/slider/slider_bloc.dart';
+import 'package:jewelry_flutter/bloc/sub_category_product/product_bloc.dart';
 import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/pages/categories.dart';
 import 'package:jewelry_flutter/pages/favorites.dart';
@@ -33,6 +34,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (context) => ProfileBloc()),
         BlocProvider(create: (context) => LocationBloc()),
         BlocProvider(create: (context) => FavoriteBloc()),
+        BlocProvider(create: (context) => SubCategoryProductBloc()),
       ],
       child: MaterialApp(
         title: 'Haydar Alkhafaje',

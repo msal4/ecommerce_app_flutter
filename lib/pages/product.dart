@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jewelry_flutter/bloc/favorite/favorite_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/models/product.dart';
 import 'package:photo_view/photo_view.dart';
@@ -19,11 +18,9 @@ class _ProductPageState extends State<ProductPage> {
   final _service = Service();
 
   int _currentImageIndex = 0;
-  FavoriteBloc _favoriteBloc;
 
   @override
   void initState() {
-    _favoriteBloc = context.bloc<FavoriteBloc>();
     super.initState();
   }
 
@@ -37,14 +34,8 @@ class _ProductPageState extends State<ProductPage> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          product.itemName.toUpperCase(),
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2.5,
-          ),
-        ),
+        title: SvgPicture.asset('assets/svg/logo_bare.svg',
+            color: Colors.white, height: kToolbarHeight - 30),
         actions: [
           Row(
             children: [

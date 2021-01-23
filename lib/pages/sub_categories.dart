@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jewelry_flutter/bloc/sub_category/category_bloc.dart';
+import 'package:jewelry_flutter/pages/sub_category_products.dart';
 import 'package:jewelry_flutter/widgets/card.dart';
 
 import '../constants.dart';
@@ -13,11 +14,6 @@ class SubCategoriesPage extends StatefulWidget {
 }
 
 class _SubCategoriesPageState extends State<SubCategoriesPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context).settings.arguments;
@@ -48,6 +44,13 @@ class _SubCategoriesPageState extends State<SubCategoriesPage> {
                 GridCard(
                   image: category.subImage,
                   title: category.subName,
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) {
+                          return SubCategoryProductPage();
+                        },
+                        settings: RouteSettings(arguments: category.idSub)));
+                  },
                 )
             ],
           );
