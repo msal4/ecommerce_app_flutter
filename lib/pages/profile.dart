@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jewelry_flutter/allah.dart';
 import 'package:jewelry_flutter/bloc/profile/profile_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    context.bloc<ProfileBloc>().add(FetchProfile());
+    context.read<ProfileBloc>().add(FetchProfile());
     super.initState();
   }
 
@@ -34,6 +35,8 @@ class _ProfilePageState extends State<ProfilePage> {
       }
 
       if (state is ProfileLoaded) {
+        Application.profile = state.profile;
+
         return ListView(
           children: [
             Padding(

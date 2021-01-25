@@ -26,13 +26,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    context.bloc<SliderBloc>().add(FetchSliders());
-    context.bloc<ProductBloc>().add(FetchProducts(show: _show));
+    context.read<SliderBloc>().add(FetchSliders());
+    context.read<ProductBloc>().add(FetchProducts(show: _show));
     super.initState();
   }
 
   void getProducts(String show, String currentTitle) {
-    context.bloc<ProductBloc>().add(FetchProducts(show: _show));
+    context.read<ProductBloc>().add(FetchProducts(show: _show));
+
     setState(() {
       _menuVisible = false;
       _currentShowTitle = currentTitle;

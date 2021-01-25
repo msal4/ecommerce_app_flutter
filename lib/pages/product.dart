@@ -1,9 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jewelry_flutter/allah.dart';
 import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/models/product.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../service.dart';
 
@@ -227,11 +229,17 @@ class _ProductPageState extends State<ProductPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 10),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          launch('tel:${Application.profile.whats}');
+                        },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.whatshot),
+                            SvgPicture.asset(
+                              'assets/svg/whatsapp.svg',
+                              color: Colors.white,
+                              width: 20,
+                            ),
                             SizedBox(width: 10),
                             Text(
                               'ORDER NOW',
