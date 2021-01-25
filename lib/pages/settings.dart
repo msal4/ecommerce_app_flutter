@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jewelry_flutter/bloc/theme/theme_cubit.dart';
 import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/switch.dart';
 
@@ -41,36 +43,38 @@ class SettingsPage extends StatelessWidget {
                   'ENABLED',
                   style: TextStyle(
                     letterSpacing: 5,
-                    color: Colors.white,
                     fontSize: 15,
                     fontFamily: 'BebasNeue',
                   ),
                 ),
               ),
-              ListTile(
-                trailing: NadirSwitch(
-                  activeColor: primaryColor,
-                  onChanged: (bool value) {},
-                  value: false,
-                ),
-                title: Text(
-                  'APPEARANCE',
-                  style: TextStyle(
-                    letterSpacing: 3,
-                    fontSize: 18,
-                    fontFamily: 'BebasNeue',
+              BlocBuilder<ThemeCubit, ThemeData>(builder: (context, theme) {
+                return ListTile(
+                  trailing: NadirSwitch(
+                    activeColor: primaryColor,
+                    onChanged: (bool value) {
+                      context.read<ThemeCubit>().toggleTheme(!value);
+                    },
+                    value: theme.brightness == Brightness.dark,
                   ),
-                ),
-                subtitle: Text(
-                  'LIGHT',
-                  style: TextStyle(
-                    letterSpacing: 5,
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontFamily: 'BebasNeue',
+                  title: Text(
+                    'APPEARANCE',
+                    style: TextStyle(
+                      letterSpacing: 3,
+                      fontSize: 18,
+                      fontFamily: 'BebasNeue',
+                    ),
                   ),
-                ),
-              ),
+                  subtitle: Text(
+                    theme.brightness == Brightness.dark ? 'DARK' : 'LIGHT',
+                    style: TextStyle(
+                      letterSpacing: 5,
+                      fontSize: 15,
+                      fontFamily: 'BebasNeue',
+                    ),
+                  ),
+                );
+              }),
               ListTile(
                 title: Text(
                   'LANGUAGE',
@@ -84,7 +88,6 @@ class SettingsPage extends StatelessWidget {
                   'ENGLISH',
                   style: TextStyle(
                     letterSpacing: 5,
-                    color: Colors.white,
                     fontSize: 15,
                     fontFamily: 'BebasNeue',
                   ),
@@ -103,7 +106,6 @@ class SettingsPage extends StatelessWidget {
                   'ENGLISH',
                   style: TextStyle(
                     letterSpacing: 5,
-                    color: Colors.white,
                     fontSize: 15,
                     fontFamily: 'BebasNeue',
                   ),

@@ -65,7 +65,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         end: Alignment.bottomRight,
                         colors: [
                           Color(0xff333333),
-                          Theme.of(context).bottomAppBarColor
+                          secondarySecondaryColor,
                         ],
                       ),
                     ),
@@ -78,6 +78,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                             Text(
                               item.itemName,
                               style: TextStyle(
+                                color: Colors.white,
                                 fontFamily: 'BebasNeue',
                                 letterSpacing: 2.5,
                                 fontWeight: FontWeight.w500,

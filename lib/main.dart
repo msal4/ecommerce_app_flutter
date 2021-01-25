@@ -6,6 +6,7 @@ import 'package:jewelry_flutter/bloc/product/product_bloc.dart';
 import 'package:jewelry_flutter/bloc/profile/profile_bloc.dart';
 import 'package:jewelry_flutter/bloc/slider/slider_bloc.dart';
 import 'package:jewelry_flutter/bloc/sub_category_product/product_bloc.dart';
+import 'package:jewelry_flutter/bloc/theme/theme_cubit.dart';
 import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/pages/categories.dart';
 import 'package:jewelry_flutter/pages/favorites.dart';
@@ -27,27 +28,23 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ProductBloc()),
-        BlocProvider(create: (context) => SliderBloc()),
-        BlocProvider(create: (context) => CategoryBloc()),
-        BlocProvider(create: (context) => SubCategoryBloc()),
-        BlocProvider(create: (context) => ProfileBloc()),
-        BlocProvider(create: (context) => LocationBloc()),
-        BlocProvider(create: (context) => FavoriteBloc()),
-        BlocProvider(create: (context) => SubCategoryProductBloc()),
+        BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(create: (_) => ProductBloc()),
+        BlocProvider(create: (_) => SliderBloc()),
+        BlocProvider(create: (_) => CategoryBloc()),
+        BlocProvider(create: (_) => SubCategoryBloc()),
+        BlocProvider(create: (_) => ProfileBloc()),
+        BlocProvider(create: (_) => LocationBloc()),
+        BlocProvider(create: (_) => FavoriteBloc()),
+        BlocProvider(create: (_) => SubCategoryProductBloc()),
       ],
-      child: MaterialApp(
-        title: 'Haydar Alkhafaje',
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          primaryColor: primaryColor,
-          accentColor: secondaryColor,
-          backgroundColor: backgroundColor,
-          scaffoldBackgroundColor: backgroundColor,
-          fontFamily: 'Montserrat',
-        ),
-        home: RootPage(),
-      ),
+      child: BlocBuilder<ThemeCubit, ThemeData>(builder: (_, theme) {
+        return MaterialApp(
+          title: 'Haydar Alkhafaje',
+          theme: theme,
+          home: RootPage(),
+        );
+      }),
     );
   }
 }
