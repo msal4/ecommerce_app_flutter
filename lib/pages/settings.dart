@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jewelry_flutter/bloc/theme/theme_cubit.dart';
@@ -12,9 +13,10 @@ class SettingsPage extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'SETTINGS',
+          'settings'.tr().toUpperCase(),
           style: TextStyle(
             fontSize: 13,
+            fontFamily: 'BebasNeue'.tr(),
             fontWeight: FontWeight.bold,
             letterSpacing: 2.5,
           ),
@@ -32,19 +34,19 @@ class SettingsPage extends StatelessWidget {
                   value: true,
                 ),
                 title: Text(
-                  'PUSH NOTIFICATIONS',
+                  'push_notifications'.tr().toUpperCase(),
                   style: TextStyle(
                     letterSpacing: 3,
                     fontSize: 18,
-                    fontFamily: 'BebasNeue',
+                    fontFamily: 'BebasNeue'.tr(),
                   ),
                 ),
                 subtitle: Text(
-                  'ENABLED',
+                  'enabled'.tr().toUpperCase(),
                   style: TextStyle(
                     letterSpacing: 5,
                     fontSize: 15,
-                    fontFamily: 'BebasNeue',
+                    fontFamily: 'BebasNeue'.tr(),
                   ),
                 ),
               ),
@@ -58,56 +60,55 @@ class SettingsPage extends StatelessWidget {
                     value: theme.brightness == Brightness.dark,
                   ),
                   title: Text(
-                    'APPEARANCE',
+                    'appearance'.tr().toUpperCase(),
                     style: TextStyle(
                       letterSpacing: 3,
                       fontSize: 18,
-                      fontFamily: 'BebasNeue',
+                      fontFamily: 'BebasNeue'.tr(),
                     ),
                   ),
                   subtitle: Text(
-                    theme.brightness == Brightness.dark ? 'DARK' : 'LIGHT',
+                    (theme.brightness == Brightness.dark ? 'dark' : 'light')
+                        .tr()
+                        .toUpperCase(),
                     style: TextStyle(
                       letterSpacing: 5,
                       fontSize: 15,
-                      fontFamily: 'BebasNeue',
+                      fontFamily: 'BebasNeue'.tr(),
                     ),
                   ),
                 );
               }),
               ListTile(
+                onTap: () {
+                  context.locale = context.locale == arabicLocale
+                      ? englishLocale
+                      : arabicLocale;
+                },
                 title: Text(
-                  'LANGUAGE',
+                  'language'.tr().toUpperCase(),
                   style: TextStyle(
                     letterSpacing: 3,
                     fontSize: 18,
-                    fontFamily: 'BebasNeue',
+                    fontFamily: 'BebasNeue'.tr(),
                   ),
                 ),
                 subtitle: Text(
-                  'ENGLISH',
+                  context.locale == arabicLocale ? 'العربية' : 'ENGLISH',
                   style: TextStyle(
                     letterSpacing: 5,
                     fontSize: 15,
-                    fontFamily: 'BebasNeue',
+                    fontFamily: 'BebasNeue'.tr(),
                   ),
                 ),
               ),
               ListTile(
                 title: Text(
-                  'RATE',
+                  'rate'.tr().toUpperCase(),
                   style: TextStyle(
                     letterSpacing: 3,
                     fontSize: 18,
-                    fontFamily: 'BebasNeue',
-                  ),
-                ),
-                subtitle: Text(
-                  'ENGLISH',
-                  style: TextStyle(
-                    letterSpacing: 5,
-                    fontSize: 15,
-                    fontFamily: 'BebasNeue',
+                    fontFamily: 'BebasNeue'.tr(),
                   ),
                 ),
               ),
@@ -121,7 +122,7 @@ class SettingsPage extends StatelessWidget {
               padding: const EdgeInsets.all(25.0),
               child: Column(
                 children: [
-                  Text('All Rights Reserved'),
+                  Text('all_rights_reserved'.tr()),
                   SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -130,7 +131,7 @@ class SettingsPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: Text(
-                          'Hayder Alkhafaje'.toUpperCase(),
+                          'app_name'.tr().toUpperCase(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,

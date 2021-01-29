@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -46,7 +47,7 @@ class GridCard extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color(0xff333333).withOpacity(.3),
+                      Color(0xff333333).withOpacity(.7),
                       Theme.of(context).bottomAppBarColor.withOpacity(.3)
                     ],
                   ),
@@ -61,7 +62,7 @@ class GridCard extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                          fontFamily: 'PlayfairDisplay',
+                          fontFamily: 'PlayfairDisplay'.tr(),
                           letterSpacing: 1,
                           fontWeight: FontWeight.w600,
                           fontSize: 20,

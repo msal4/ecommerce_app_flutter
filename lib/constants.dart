@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 const primaryColor = Color(0xffa46e50);
@@ -54,3 +55,11 @@ buildAppBar({title = 'TITLE'}) => AppBar(
         ),
       ),
     );
+
+const arabicLocale = Locale('ar');
+const englishLocale = Locale('en');
+
+extension IsArabic on BuildContext {
+  get isArabic => locale == arabicLocale;
+  get isEnglish => locale == englishLocale;
+}

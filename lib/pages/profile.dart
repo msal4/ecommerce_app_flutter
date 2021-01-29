@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants.dart';
 
 class ProfilePage extends StatefulWidget {
-  final title = "PROFILE";
+  final title = "profile";
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -59,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'ABOUT US',
+                    'about_us'.tr(),
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       color: Colors.black,
@@ -69,7 +70,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    state.profile.aboutUs,
+                    context.isArabic
+                        ? state.profile.aboutUs
+                        : state.profile.aboutUsEn,
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -81,7 +84,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'CONTACT US',
+                    'gold_price'.tr(),
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.w600,
+                      color: secondaryColor,
+                      fontSize: 12,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text('\$${state.profile.dollarPrice}'),
+                  SizedBox(height: 30),
+                  Text(
+                    'contact_us'.tr(),
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       letterSpacing: 2,
@@ -92,8 +108,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 25),
                   ListTile(
-                    onTap: () async {
-                      await launch('tel:${state.profile.phoneNumber}');
+                    onTap: () {
+                      launch('tel:${state.profile.phoneNumber}');
                     },
                     contentPadding: const EdgeInsets.all(0),
                     leading: Icon(Icons.phone, color: secondaryColor),
@@ -115,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'FOLLOW US ON',
+                    'follow_us_on'.tr(),
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       letterSpacing: 2,
@@ -155,6 +171,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         onPressed: () {
                           launch(state.profile.instagram);
+                        },
+                      ),
+                      SizedBox(width: 20),
+                      IconButton(
+                        icon: SvgPicture.asset(
+                          'assets/svg/facebook.svg',
+                          color: secondaryColor,
+                        ),
+                        onPressed: () {
+                          launch(state.profile.facebook);
                         },
                       ),
                       SizedBox(width: 20),

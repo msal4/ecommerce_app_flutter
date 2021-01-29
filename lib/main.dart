@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:jewelry_flutter/bloc/location/location_bloc.dart';
 import 'package:jewelry_flutter/bloc/product/product_bloc.dart';
 import 'package:jewelry_flutter/bloc/profile/profile_bloc.dart';
@@ -20,8 +22,53 @@ import 'bloc/favorite/favorite_bloc.dart';
 import 'bloc/sub_category/category_bloc.dart';
 
 void main() {
-  runApp(App());
+  runApp(
+    EasyLocalization(
+      supportedLocales: [arabicLocale, englishLocale],
+      path: 'assets/translations',
+      child: App(),
+    ),
+  );
 }
+
+final introPages = [
+  PageViewModel(
+    title: "Hello niggers",
+    bodyWidget: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Text("Click on "),
+        Icon(Icons.edit),
+        Text(" to edit a post"),
+      ],
+    ),
+    image: const Center(child: Icon(Icons.android)),
+  ),
+  PageViewModel(
+    title: "Hello niggers",
+    bodyWidget: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Text("Click on "),
+        Icon(Icons.edit),
+        Text(" to edit a post"),
+      ],
+    ),
+    image: const Center(child: Icon(Icons.android)),
+  ),
+  PageViewModel(
+    title: "Hello niggers",
+    bodyWidget: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Text("Click on "),
+        Icon(Icons.edit),
+        Text(" to edit a post"),
+      ],
+    ),
+    image: const Center(child: Icon(Icons.android)),
+  ),
+];
 
 class App extends StatelessWidget {
   @override
@@ -38,13 +85,41 @@ class App extends StatelessWidget {
         BlocProvider(create: (_) => FavoriteBloc()),
         BlocProvider(create: (_) => SubCategoryProductBloc()),
       ],
-      child: BlocBuilder<ThemeCubit, ThemeData>(builder: (_, theme) {
-        return MaterialApp(
-          title: 'Haydar Alkhafaje',
-          theme: theme,
-          home: RootPage(),
-        );
-      }),
+      child: BlocBuilder<ThemeCubit, ThemeData>(
+        builder: (_, theme) {
+          return MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            title: 'app_name'.tr(),
+            theme: theme.copyWith(
+              textTheme: ThemeData.dark().textTheme.apply(
+                  fontFamily:
+                      context.isArabic ? 'HelveticaNeueArabic' : 'Montserrat'),
+            ),
+            home: true
+                ? RootPage()
+                : Builder(
+                    builder: (context) {
+                      return IntroductionScreen(
+                        pages: introPages,
+                        showNextButton: true,
+                        next: const Text('NEXT'),
+                        dotsDecorator:
+                            DotsDecorator(activeColor: secondaryColor),
+                        done: const Text("GET STARTED",
+                            style: TextStyle(fontWeight: FontWeight.w600)),
+                        onDone: () {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => RootPage()));
+                        },
+                      );
+                    },
+                  ),
+          );
+        },
+      ),
     );
   }
 }
@@ -68,15 +143,19 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBarTitle =
+        ((_pages[_index] as dynamic).title as String).tr().toUpperCase();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: _index == _pages.length - 1 ? backgroundColor : null,
         centerTitle: true,
         title: Text(
-          (_pages[_index] as dynamic).title,
+          appBarTitle,
           style: TextStyle(
             fontSize: 13,
+            fontFamily: 'Montserrat'.tr(),
             fontWeight: FontWeight.bold,
             letterSpacing: 2.5,
           ),

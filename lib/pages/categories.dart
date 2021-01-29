@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jewelry_flutter/bloc/category/category_bloc.dart';
+import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/pages/sub_categories.dart';
 import 'package:jewelry_flutter/widgets/card.dart';
 
 class CategoriesPage extends StatefulWidget {
-  final title = "CATEGORIES";
+  final title = "categories";
 
   @override
   _CategoriesPageState createState() => _CategoriesPageState();
@@ -41,7 +42,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
             for (final category in state.categories)
               GridCard(
                 image: category.categoryImage,
-                title: category.categoryName,
+                title: context.isArabic
+                    ? category.categoryName
+                    : category.categoryNameEn,
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jewelry_flutter/bloc/product/product_bloc.dart';
@@ -10,7 +11,7 @@ import 'package:jewelry_flutter/pages/product.dart';
 import 'package:jewelry_flutter/widgets/card.dart' as card;
 
 class HomePage extends StatefulWidget {
-  final title = "HOME";
+  final title = "home";
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -22,7 +23,6 @@ class _HomePageState extends State<HomePage> {
   bool _menuVisible = false;
   _ViewMode _viewMode = _ViewMode.list;
   String _show = 'all';
-  String _currentShowTitle = 'ALL';
 
   @override
   void initState() {
@@ -31,12 +31,11 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  void getProducts(String show, String currentTitle) {
+  void getProducts(String show) {
     context.read<ProductBloc>().add(FetchProducts(show: _show));
 
     setState(() {
       _menuVisible = false;
-      _currentShowTitle = currentTitle;
       _show = show;
     });
   }
@@ -88,7 +87,9 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(top: 25, right: 25, left: 25),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: context.isArabic
+                      ? CrossAxisAlignment.start
+                      : CrossAxisAlignment.center,
                   children: [
                     InkWell(
                       onTap: () {
@@ -96,25 +97,28 @@ class _HomePageState extends State<HomePage> {
                           _menuVisible = !_menuVisible;
                         });
                       },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            _currentShowTitle,
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontFamily: 'BebasNeue',
-                              fontWeight: FontWeight.w500,
+                      child: Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              _show.tr(),
+                              style: TextStyle(
+                                fontSize: context.isArabic ? 20 : 25,
+                                fontFamily: 'BebasNeue'.tr(),
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 30,
-                            ),
-                          )
-                        ],
+                            SizedBox(width: 5),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 20,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Spacer(),
@@ -200,8 +204,9 @@ class _HomePageState extends State<HomePage> {
             if (state is ProductsLoaded) {
               return Stack(
                 children: [
-                  if (_viewMode == _ViewMode.list)
-                    Column(
+                  AnimatedCrossFade(
+                    duration: const Duration(milliseconds: 100),
+                    firstChild: Column(
                       children: [
                         for (int i = 0; i < state.products.length; i++)
                           card.Card(
@@ -216,9 +221,8 @@ class _HomePageState extends State<HomePage> {
                             },
                           ),
                       ],
-                    )
-                  else
-                    Container(
+                    ),
+                    secondChild: Container(
                       padding: const EdgeInsets.all(10.0),
                       child: GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
@@ -240,7 +244,9 @@ class _HomePageState extends State<HomePage> {
                                 ? product.images[0].imagePath
                                 : '',
                             title: product.itemName,
-                            subtitle: product.categoryName,
+                            subtitle: context.isArabic
+                                ? product.categoryName
+                                : product.categoryNameEn,
                             onPressed: () {
                               navigateToProduct(context, product);
                             },
@@ -248,6 +254,10 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
+                    crossFadeState: _viewMode == _ViewMode.list
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
+                  ),
                   AnimatedPositioned(
                     duration: Duration(milliseconds: 250),
                     top: _menuVisible ? 0 : -200,
@@ -263,22 +273,22 @@ class _HomePageState extends State<HomePage> {
                           Container(
                               color: Colors.black.withOpacity(.2), height: 10),
                           buildListTile(
-                              text: 'ALL',
+                              text: 'all'.tr().toUpperCase(),
                               selected: _show == 'all',
                               onPressed: () {
-                                getProducts('all', 'ALL');
+                                getProducts('all');
                               }),
                           buildListTile(
-                              text: 'RECENTLY ADDED',
+                              text: 'recently'.tr(),
                               selected: _show == 'recently',
                               onPressed: () {
-                                getProducts('recently', 'RECENTLY ADDED');
+                                getProducts('recently');
                               }),
                           buildListTile(
-                              text: 'MOST POPULAR',
+                              text: 'most'.tr(),
                               selected: _show == 'most',
                               onPressed: () {
-                                getProducts('most', 'MOST POPULAR');
+                                getProducts('most');
                               }),
                         ],
                       ),
@@ -314,7 +324,7 @@ class _HomePageState extends State<HomePage> {
         style: TextStyle(
           color: selected ? Colors.white : Colors.white.withOpacity(.6),
           fontWeight: FontWeight.w500,
-          fontFamily: 'BebasNeue',
+          fontFamily: 'BebasNeue'.tr(),
           letterSpacing: 2,
           fontSize: 25,
         ),

@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jewelry_flutter/allah.dart';
@@ -125,33 +126,21 @@ class _ProductPageState extends State<ProductPage> {
               children: [
                 Text(
                   product.itemName,
-                  style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 35),
+                  style: TextStyle(
+                      fontFamily: 'PlayfairDisplay'.tr(), fontSize: 35),
                 ),
                 SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.categoryName,
-                      style: TextStyle(
-                        fontFamily: 'BebasNeue',
-                        fontSize: 15,
-                        letterSpacing: 4,
-                        color: secondaryColor,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      product.itemDate,
-                      style: TextStyle(
-                        fontFamily: 'BebasNeue',
-                        color: Colors.white.withOpacity(.5),
-                        fontSize: 15,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                  ],
+                Text(
+                  context.isArabic
+                      ? product.categoryName
+                      : product.categoryNameEn,
+                  style: TextStyle(
+                    fontFamily: 'BebasNeue'.tr(),
+                    fontSize: 15,
+                    letterSpacing: 4,
+                    color: secondaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 SizedBox(height: 15),
                 Text(
@@ -168,7 +157,7 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'GOLD CALIBER',
+                          'gold_caliber'.tr().toUpperCase(),
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -191,7 +180,28 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'WEIGHT',
+                          'gold_price'.tr().toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          Application.profile.dollarPrice.toString(),
+                          style: TextStyle(
+                            fontFamily: 'PlayfairDisplay',
+                            letterSpacing: 2,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'weight'.tr().toUpperCase(),
                           style: TextStyle(
                               fontSize: 12, fontWeight: FontWeight.w500),
                         ),

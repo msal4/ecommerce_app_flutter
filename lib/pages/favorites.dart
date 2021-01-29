@@ -5,7 +5,7 @@ import 'package:jewelry_flutter/bloc/favorite/favorite_bloc.dart';
 import '../constants.dart';
 
 class FavoritesPage extends StatefulWidget {
-  final title = "FAVORITES";
+  final title = "favorites";
 
   @override
   _FavoritesPageState createState() => _FavoritesPageState();
@@ -76,7 +76,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              item.itemName,
+                              context.isArabic
+                                  ? item.itemName
+                                  : item.itemNameEn,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'BebasNeue',

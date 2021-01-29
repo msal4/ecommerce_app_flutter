@@ -38,6 +38,8 @@ dependencies:
   flutter_displaymode: ^0.1.1
   photo_view: ^0.10.3
   device_info: ^1.0.0
+  introduction_screen: ^1.0.7
+  easy_localization: ^2.3.3
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +59,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/svg/
+    - assets/translations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -107,12 +110,12 @@ flutter:
       fonts:
         - asset: fonts/PlayfairDisplay.ttf
           style: normal
-#    - family: HelveticaNeue
-#      fonts:
-#        - asset: fonts/helvetica-neue-lt-arabic-45-light.ttf
-#          weight: 300
-#        - asset: fonts/helvetica-neue-lt-arabic-45-bold.ttf
-#          weight: 700
+    - family: HelveticaNeueArabic
+      fonts:
+        - asset: fonts/helvetica-neue-lt-arabic-light.ttf
+          weight: 300
+        - asset: fonts/helvetica-neue-lt-arabic-bold.ttf
+          weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
