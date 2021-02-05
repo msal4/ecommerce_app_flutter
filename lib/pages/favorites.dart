@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jewelry_flutter/bloc/favorite/favorite_bloc.dart';
+import 'package:jewelry_flutter/bloc/product/product_bloc.dart';
 
 import '../constants.dart';
+import '../service.dart';
 
 class FavoritesPage extends StatefulWidget {
   final title = "favorites";
@@ -12,9 +14,11 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
+  final _service = Service();
+
   @override
   void initState() {
-    context.bloc<FavoriteBloc>().add(FetchFavorites());
+    context.read<FavoriteBloc>().add(FetchFavorites());
     super.initState();
   }
 
@@ -27,13 +31,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
         return Center(child: CircularProgressIndicator());
       }
 
-      if (state is FavoriteError) {
-        return Center(child: Text(state.error.message));
-      }
-
       if (state is FavoritesLoaded) {
         final favorites = state.favorites;
-        print(favorites[0].images[0].imagePath);
 
         return ListView.builder(
           padding: const EdgeInsets.all(15),
@@ -95,7 +94,18 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           clipBehavior: Clip.hardEdge,
                           color: Colors.white,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              _service
+                                  .addFavorite(itemId: item.itemId)
+                                  .whenComplete(() {
+                                context
+                                    .read<FavoriteBloc>()
+                                    .add(FetchFavorites());
+                                context
+                                    .read<ProductBloc>()
+                                    .add(FetchProducts(show: 'all'));
+                              });
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Icon(

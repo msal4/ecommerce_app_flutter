@@ -1,5 +1,5 @@
 {
-  "app_name": "حيدر الخفاجي",
+  "app_name": "مجوهرات حيدر الخفاجي",
   "home": "الصفحة الرئيسية",
   "categories": "الاقسام",
   "profile": "الصفحة الشخصية",
@@ -12,7 +12,7 @@
   "most": "الاكثر شهرة",
   "open_in_map": "افتح في الخريطة",
   "contact_us": "تواصل معنا",
-  "about_us": "عنا",
+  "about_us": "عن الشركة",
   "follow_us_on": "تابعنا على",
   "settings": "الاعدادات",
   "gold_price": "سعر الذهب",
@@ -29,5 +29,6 @@
   "Montserrat": "HelveticaNeueArabic",
   "PlayfairDisplay": "HelveticaNeueArabic",
   "weight": "الوزن",
-  "gold_caliber": "القيراط"
+  "gold_caliber": "القيراط",
+  "order_now": "اطلب الان"
 }

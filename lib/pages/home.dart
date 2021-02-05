@@ -3,12 +3,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jewelry_flutter/bloc/product/product_bloc.dart';
+import 'package:jewelry_flutter/bloc/profile/profile_bloc.dart';
 import 'package:jewelry_flutter/bloc/slider/slider_bloc.dart';
 import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/models/product.dart';
 import 'package:jewelry_flutter/models/slider.dart';
 import 'package:jewelry_flutter/pages/product.dart';
 import 'package:jewelry_flutter/widgets/card.dart' as card;
+
+import '../service.dart';
 
 class HomePage extends StatefulWidget {
   final title = "home";
@@ -23,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   bool _menuVisible = false;
   _ViewMode _viewMode = _ViewMode.list;
   String _show = 'all';
+  final _service = Service();
 
   @override
   void initState() {
@@ -197,7 +201,23 @@ class _HomePageState extends State<HomePage> {
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 50.0, horizontal: 25),
-                child: Text(state.error.message),
+                child: Column(
+                  children: [
+                    RaisedButton.icon(
+                      label: Text('RETRY'),
+                      onPressed: () {
+                        context.read<ProfileBloc>().add(FetchProfile());
+                        context.read<SliderBloc>().add(FetchSliders());
+                        context
+                            .read<ProductBloc>()
+                            .add(FetchProducts(show: _show));
+                      },
+                      icon: Icon(Icons.refresh),
+                      color: Colors.black12,
+                    ),
+                    Text(state.error.message),
+                  ],
+                ),
               );
             }
 
@@ -210,12 +230,16 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         for (int i = 0; i < state.products.length; i++)
                           card.Card(
+                            isFavorite: state.products[i].isFavorite,
                             img: state.products[i].images != null &&
                                     state.products[i].images.length > 0
                                 ? state.products[i].images[0].imagePath
                                 : '',
                             height: height,
                             marginTop: i == 0 ? 25 : 0,
+                            onFavoritePressed: () {
+                              onFavoritePressed(state.products[i]);
+                            },
                             onPressed: () {
                               navigateToProduct(context, state.products[i]);
                             },
@@ -239,6 +263,7 @@ class _HomePageState extends State<HomePage> {
                           final product = state.products[index];
 
                           return card.GridCard(
+                            isFavorite: product.isFavorite,
                             image: product.images != null &&
                                     product.images.length > 0
                                 ? product.images[0].imagePath
@@ -249,6 +274,9 @@ class _HomePageState extends State<HomePage> {
                                 : product.categoryNameEn,
                             onPressed: () {
                               navigateToProduct(context, product);
+                            },
+                            onFavoritePressed: () {
+                              onFavoritePressed(product);
                             },
                           );
                         },
@@ -263,34 +291,39 @@ class _HomePageState extends State<HomePage> {
                     top: _menuVisible ? 0 : -200,
                     right: 0,
                     left: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: horizontalGradient,
-                        color: primaryColor,
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                              color: Colors.black.withOpacity(.2), height: 10),
-                          buildListTile(
-                              text: 'all'.tr().toUpperCase(),
-                              selected: _show == 'all',
-                              onPressed: () {
-                                getProducts('all');
-                              }),
-                          buildListTile(
-                              text: 'recently'.tr(),
-                              selected: _show == 'recently',
-                              onPressed: () {
-                                getProducts('recently');
-                              }),
-                          buildListTile(
-                              text: 'most'.tr(),
-                              selected: _show == 'most',
-                              onPressed: () {
-                                getProducts('most');
-                              }),
-                        ],
+                    child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 250),
+                      opacity: _menuVisible ? 1 : 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: horizontalGradient,
+                          color: primaryColor,
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                                color: Colors.black.withOpacity(.2),
+                                height: 10),
+                            buildListTile(
+                                text: 'all'.tr().toUpperCase(),
+                                selected: _show == 'all',
+                                onPressed: () {
+                                  getProducts('all');
+                                }),
+                            buildListTile(
+                                text: 'recently'.tr(),
+                                selected: _show == 'recently',
+                                onPressed: () {
+                                  getProducts('recently');
+                                }),
+                            buildListTile(
+                                text: 'most'.tr(),
+                                selected: _show == 'most',
+                                onPressed: () {
+                                  getProducts('most');
+                                }),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -304,10 +337,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void onFavoritePressed(Product product) {
+    _service.addFavorite(itemId: product.idItem, itemLikes: product.itemLike);
+    product.isFavorite = !product.isFavorite;
+    product.likes = product.isFavorite ? product.likes + 1 : product.likes - 1;
+    setState(() {});
+  }
+
   void navigateToProduct(BuildContext context, Product product) {
     Navigator.of(context).push(
       MaterialPageRoute(
-          builder: (context) => ProductPage(),
+          builder: (context) => ProductPage(
+                onFavorite: () {
+                  setState(() {});
+                },
+              ),
           settings: RouteSettings(arguments: product)),
     );
   }

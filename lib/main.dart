@@ -93,9 +93,14 @@ class App extends StatelessWidget {
             locale: context.locale,
             title: 'app_name'.tr(),
             theme: theme.copyWith(
-              textTheme: ThemeData.dark().textTheme.apply(
-                  fontFamily:
-                      context.isArabic ? 'HelveticaNeueArabic' : 'Montserrat'),
+              textTheme: (theme.brightness == Brightness.dark
+                      ? ThemeData.dark()
+                      : ThemeData.light())
+                  .textTheme
+                  .apply(
+                      fontFamily: context.isArabic
+                          ? 'HelveticaNeueArabic'
+                          : 'Montserrat'),
             ),
             home: true
                 ? RootPage()
@@ -137,7 +142,6 @@ class _RootPageState extends State<RootPage> {
     CategoriesPage(),
     MapPage(),
     FavoritesPage(),
-    ProfilePage(),
     ProfilePage(),
   ];
 
@@ -185,7 +189,10 @@ class _RootPageState extends State<RootPage> {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           currentIndex: _index,
-          onTap: (index) => setState(() => _index = index),
+          onTap: (index) {
+            if (index == 3) context.read<FavoriteBloc>().add(FetchFavorites());
+            setState(() => _index = index);
+          },
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(

@@ -41,6 +41,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
           children: [
             for (final category in state.categories)
               GridCard(
+                favorite: false,
                 image: category.categoryImage,
                 title: context.isArabic
                     ? category.categoryName

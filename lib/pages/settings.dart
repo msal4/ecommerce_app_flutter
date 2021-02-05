@@ -27,29 +27,29 @@ class SettingsPage extends StatelessWidget {
           ListView(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
             children: [
-              ListTile(
-                trailing: NadirSwitch(
-                  activeColor: primaryColor,
-                  onChanged: (bool value) {},
-                  value: true,
-                ),
-                title: Text(
-                  'push_notifications'.tr().toUpperCase(),
-                  style: TextStyle(
-                    letterSpacing: 3,
-                    fontSize: 18,
-                    fontFamily: 'BebasNeue'.tr(),
-                  ),
-                ),
-                subtitle: Text(
-                  'enabled'.tr().toUpperCase(),
-                  style: TextStyle(
-                    letterSpacing: 5,
-                    fontSize: 15,
-                    fontFamily: 'BebasNeue'.tr(),
-                  ),
-                ),
-              ),
+              // ListTile(
+              //   trailing: NadirSwitch(
+              //     activeColor: primaryColor,
+              //     onChanged: (bool value) {},
+              //     value: true,
+              //   ),
+              //   title: Text(
+              //     'push_notifications'.tr().toUpperCase(),
+              //     style: TextStyle(
+              //       letterSpacing: 3,
+              //       fontSize: 18,
+              //       fontFamily: 'BebasNeue'.tr(),
+              //     ),
+              //   ),
+              //   subtitle: Text(
+              //     'enabled'.tr().toUpperCase(),
+              //     style: TextStyle(
+              //       letterSpacing: 5,
+              //       fontSize: 15,
+              //       fontFamily: 'BebasNeue'.tr(),
+              //     ),
+              //   ),
+              // ),
               BlocBuilder<ThemeCubit, ThemeData>(builder: (context, theme) {
                 return ListTile(
                   trailing: NadirSwitch(

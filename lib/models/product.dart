@@ -15,6 +15,8 @@ class Product {
     this.categoryName,
     this.categoryNameEn,
     this.images,
+    this.isFavorite,
+    this.likes,
   });
 
   final int idItem;
@@ -28,6 +30,8 @@ class Product {
   final String categoryName;
   final String categoryNameEn;
   final List<ProductImage> images;
+  bool isFavorite;
+  int likes;
 
   factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
 
@@ -43,6 +47,8 @@ class Product {
         itemLike: json["itemLike"],
         subName: json["subName"],
         categoryName: json["categoryName"],
+        isFavorite: json["isFavorite"],
+        likes: json["likes"],
         categoryNameEn: json["categoryNameEn"],
         images: List<ProductImage>.from(
             json["images"].map((x) => ProductImage.fromMap(x))),
@@ -57,6 +63,8 @@ class Product {
         "itemQuantity": itemQuantity,
         "itemLike": itemLike,
         "subName": subName,
+        "isFavorite": isFavorite,
+        "likes": likes,
         "categoryName": categoryName,
         "categoryNameEn": categoryNameEn,
         "images": List<dynamic>.from(images.map((x) => x.toMap())),
@@ -64,23 +72,24 @@ class Product {
 }
 
 class SubCategoryProduct {
-  SubCategoryProduct({
-    this.idItem,
-    this.itemName,
-    this.itemDescription,
-    this.itemDate,
-    this.itemQuality,
-    this.itemQuantity,
-    this.itemLike,
-    this.itemNameEn,
-    this.itemDescriptionEn,
-    this.subName,
-    this.categoryName,
-    this.subNameEn,
-    this.categoryNameEn,
-    this.foundFavorite,
-    this.images,
-  });
+  SubCategoryProduct(
+      {this.idItem,
+      this.itemName,
+      this.itemDescription,
+      this.itemDate,
+      this.itemQuality,
+      this.itemQuantity,
+      this.itemLike,
+      this.itemNameEn,
+      this.itemDescriptionEn,
+      this.subName,
+      this.categoryName,
+      this.subNameEn,
+      this.categoryNameEn,
+      this.foundFavorite,
+      this.images,
+      this.likes,
+      this.isFavorite});
 
   final int idItem;
   final String itemName;
@@ -97,6 +106,8 @@ class SubCategoryProduct {
   final String categoryNameEn;
   final bool foundFavorite;
   final List<ProductImage> images;
+  bool isFavorite;
+  int likes;
 
   factory SubCategoryProduct.fromJson(String str) =>
       SubCategoryProduct.fromMap(json.decode(str));
@@ -117,6 +128,8 @@ class SubCategoryProduct {
         subName: json["subName"],
         categoryName: json["categoryName"],
         subNameEn: json["subNameEn"],
+        isFavorite: json["isFavorite"],
+        likes: json["likes"],
         categoryNameEn: json["categoryNameEn"],
         foundFavorite: json["foundFavorite"],
         images: List<ProductImage>.from(
@@ -138,6 +151,8 @@ class SubCategoryProduct {
         "subNameEn": subNameEn,
         "categoryNameEn": categoryNameEn,
         "foundFavorite": foundFavorite,
+        "isFavorite": isFavorite,
+        "likes": likes,
         "images": List<dynamic>.from(images.map((x) => x.toMap())),
       };
 }

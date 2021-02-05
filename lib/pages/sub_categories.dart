@@ -7,8 +7,6 @@ import 'package:jewelry_flutter/widgets/card.dart';
 import '../constants.dart';
 
 class SubCategoriesPage extends StatefulWidget {
-  final title = "SUB_CATEGORIES";
-
   @override
   _SubCategoriesPageState createState() => _SubCategoriesPageState();
 }
@@ -18,7 +16,7 @@ class _SubCategoriesPageState extends State<SubCategoriesPage> {
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context).settings.arguments;
     context.bloc<SubCategoryBloc>().add(FetchSubCategories(id: id));
-    print('fetching $id');
+    print('loaded $id');
 
     return Scaffold(
       appBar: buildAppBar(title: 'CATEGORY'),
@@ -42,6 +40,7 @@ class _SubCategoriesPageState extends State<SubCategoriesPage> {
             children: [
               for (final category in state.categories)
                 GridCard(
+                  favorite: false,
                   image: category.subImage,
                   title: category.subName,
                   onPressed: () {

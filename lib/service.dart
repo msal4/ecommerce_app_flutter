@@ -55,7 +55,9 @@ class Service {
   }
 
   Future<List<Product>> getProducts({String show = 'all'}) async {
-    final res = await dio.get('/items', queryParameters: {'show': show});
+    final details = await getDeviceDetails();
+    final res = await dio.get('/items',
+        queryParameters: {'show': show, 'macAddress': details.identifier});
     return List<Product>.from(res.data.map((item) => Product.fromMap(item)));
   }
 
@@ -75,12 +77,16 @@ class Service {
   }
 
   Future<List<Category>> getCategories() async {
-    final res = await dio.get('/categories');
+    final details = await getDeviceDetails();
+    final res = await dio.get('/categories',
+        queryParameters: {'macAddress': details.identifier});
     return List<Category>.from(res.data.map((item) => Category.fromMap(item)));
   }
 
   Future<List<SubCategory>> getSubCategories(int id) async {
-    final res = await dio.get('/subCategoryId/$id');
+    final details = await getDeviceDetails();
+    final res = await dio.get('/subCategoryId/$id',
+        queryParameters: {'macAddress': details.identifier});
     return List<SubCategory>.from(
       res.data.map((item) => SubCategory.fromMap(item)),
     );
@@ -93,18 +99,18 @@ class Service {
 
   Future<List<Favorite>> getFavorites() async {
     final details = await getDeviceDetails();
+    print(details.identifier);
     final res = await dio.get('/favoriteMac/${details.identifier}');
     return List<Favorite>.from(
         res.data.map(((item) => Favorite.fromMap(item))));
   }
 
-  Future<void> addFavorite(
-      {@required int itemId, @required int itemLikes}) async {
+  Future<void> addFavorite({@required int itemId, int itemLikes = 1}) async {
     final details = await getDeviceDetails();
-    await dio.post('/addFavorites/', data: {
+    return await dio.post('/addFavorites/', data: {
       "macAddress": details.identifier,
       "itemId": itemId,
-      "itemLike": itemLikes
+      "itemLike": itemLikes ?? 1
     });
   }
 

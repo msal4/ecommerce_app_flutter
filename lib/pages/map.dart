@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,7 +9,7 @@ import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/models/Location.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-const _zoom = 20.0;
+const _zoom = 15.0;
 
 class MapPage extends StatefulWidget {
   final title = 'locations';
@@ -28,7 +26,15 @@ class _MapPageState extends State<MapPage> {
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#242f3e"
+        "color": "#212121"
+      }
+    ]
+  },
+  {
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "visibility": "off"
       }
     ]
   },
@@ -36,7 +42,7 @@ class _MapPageState extends State<MapPage> {
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#746855"
+        "color": "#d7ab72"
       }
     ]
   },
@@ -44,7 +50,33 @@ class _MapPageState extends State<MapPage> {
     "elementType": "labels.text.stroke",
     "stylers": [
       {
-        "color": "#242f3e"
+        "color": "#212121"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#757575"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.country",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#9e9e9e"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.land_parcel",
+    "stylers": [
+      {
+        "visibility": "off"
       }
     ]
   },
@@ -53,7 +85,7 @@ class _MapPageState extends State<MapPage> {
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#d59563"
+        "color": "#bdbdbd"
       }
     ]
   },
@@ -62,7 +94,7 @@ class _MapPageState extends State<MapPage> {
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#d59563"
+        "color": "#757575"
       }
     ]
   },
@@ -71,7 +103,7 @@ class _MapPageState extends State<MapPage> {
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#263c3f"
+        "color": "#181818"
       }
     ]
   },
@@ -80,25 +112,25 @@ class _MapPageState extends State<MapPage> {
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#6b9a76"
+        "color": "#616161"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      {
+        "color": "#1b1b1b"
       }
     ]
   },
   {
     "featureType": "road",
-    "elementType": "geometry",
+    "elementType": "geometry.fill",
     "stylers": [
       {
-        "color": "#38414e"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "color": "#212a37"
+        "color": "#2c2c2c"
       }
     ]
   },
@@ -107,7 +139,16 @@ class _MapPageState extends State<MapPage> {
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#9ca5b3"
+        "color": "#888888"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#373737"
       }
     ]
   },
@@ -116,43 +157,34 @@ class _MapPageState extends State<MapPage> {
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#746855"
+        "color": "#3c3c3c"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "geometry.stroke",
+    "featureType": "road.highway.controlled_access",
+    "elementType": "geometry",
     "stylers": [
       {
-        "color": "#1f2835"
+        "color": "#4e4e4e"
       }
     ]
   },
   {
-    "featureType": "road.highway",
+    "featureType": "road.local",
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#f3d19c"
+        "color": "#616161"
       }
     ]
   },
   {
     "featureType": "transit",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#2f3948"
-      }
-    ]
-  },
-  {
-    "featureType": "transit.station",
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#d59563"
+        "color": "#757575"
       }
     ]
   },
@@ -161,7 +193,7 @@ class _MapPageState extends State<MapPage> {
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#17263c"
+        "color": "#000000"
       }
     ]
   },
@@ -170,16 +202,7 @@ class _MapPageState extends State<MapPage> {
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#515c6d"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "labels.text.stroke",
-    "stylers": [
-      {
-        "color": "#17263c"
+        "color": "#3d3d3d"
       }
     ]
   }
@@ -243,41 +266,6 @@ class _MapPageState extends State<MapPage> {
                               _controller.complete(controller);
                             },
                           ),
-                          Positioned(
-                            bottom: Platform.isIOS ? 45 : 60,
-                            left: 10,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                gradient: horizontalGradient,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: InkWell(
-                                onTap: () async {
-                                  final url =
-                                      "https://www.google.com/maps/search/?api=1&query=${currentLocation.lat},${currentLocation.lang}";
-                                  if (await canLaunch(url)) {
-                                    await launch(url);
-                                  }
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.location_on_outlined),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      'open_in_map'.tr().toUpperCase(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -318,25 +306,54 @@ class _MapPageState extends State<MapPage> {
                               ),
                               items: [
                                 for (final loc in locations)
-                                  Container(
-                                    clipBehavior: Clip.hardEdge,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(22),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 10,
-                                          color: Colors.black.withOpacity(.25),
-                                          spreadRadius: 1,
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final url =
+                                          "https://www.google.com/maps/search/?api=1&query=${currentLocation.lat},${currentLocation.lang}";
+                                      if (await canLaunch(url)) {
+                                        await launch(url);
+                                      }
+                                    },
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          clipBehavior: Clip.hardEdge,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(22),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                blurRadius: 10,
+                                                color: Colors.black
+                                                    .withOpacity(.25),
+                                                spreadRadius: 1,
+                                              )
+                                            ],
+                                          ),
+                                          margin: const EdgeInsets.only(
+                                              top: 10, bottom: 10, right: 10),
+                                          child: Image.network(
+                                            loc.storeImage,
+                                            fit: BoxFit.cover,
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 15,
+                                          right: 15,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              color: secondaryColor,
+                                            ),
+                                            padding: const EdgeInsets.all(6),
+                                            child: Icon(
+                                                Icons.location_on_outlined),
+                                          ),
                                         )
                                       ],
-                                    ),
-                                    margin: const EdgeInsets.only(
-                                        top: 10, bottom: 10, right: 10),
-                                    child: Image.network(
-                                      loc.storeImage,
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: double.infinity,
                                     ),
                                   ),
                               ],

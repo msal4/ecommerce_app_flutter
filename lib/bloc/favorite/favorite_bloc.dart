@@ -33,6 +33,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
           error: InvalidFormatException('Invalid Response Format'),
         );
       } catch (e) {
+        print(e);
         yield FavoriteError(error: UnknownException('Unknown Error'));
       }
     }

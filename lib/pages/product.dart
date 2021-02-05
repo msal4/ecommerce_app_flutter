@@ -13,6 +13,10 @@ import '../service.dart';
 class ProductPage extends StatefulWidget {
   @override
   _ProductPageState createState() => _ProductPageState();
+
+  ProductPage({this.onFavorite});
+
+  VoidCallback onFavorite;
 }
 
 class _ProductPageState extends State<ProductPage> {
@@ -22,10 +26,7 @@ class _ProductPageState extends State<ProductPage> {
 
   int _currentImageIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class _ProductPageState extends State<ProductPage> {
           Row(
             children: [
               Text(
-                product.itemLike.toString(),
+                product.likes.toString(),
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
@@ -52,10 +53,18 @@ class _ProductPageState extends State<ProductPage> {
               ),
               IconButton(
                 color: secondaryColor,
-                icon: Icon(Icons.favorite_rounded),
-                onPressed: () async {
-                  await _service.addFavorite(
+                icon: Icon(product.isFavorite
+                    ? Icons.favorite_rounded
+                    : Icons.favorite_outline),
+                onPressed: () {
+                  _service.addFavorite(
                       itemId: product.idItem, itemLikes: product.itemLike);
+                  product.isFavorite = !product.isFavorite;
+                  product.likes = product.isFavorite
+                      ? product.likes + 1
+                      : product.likes - 1;
+                  setState(() {});
+                  if (widget.onFavorite != null) widget.onFavorite();
                 },
               ),
             ],
@@ -252,7 +261,7 @@ class _ProductPageState extends State<ProductPage> {
                             ),
                             SizedBox(width: 10),
                             Text(
-                              'ORDER NOW',
+                              'order_now'.tr().toUpperCase(),
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontFamily: 'BebasNeue',

@@ -24,18 +24,18 @@ shadow() => BoxShadow(
       offset: const Offset(0.0, 15),
     );
 
-favoriteBtn() => Container(
+favoriteBtn({VoidCallback onPressed, isFavorite = false}) => Container(
       decoration: BoxDecoration(boxShadow: [shadow()]),
       child: Material(
         borderRadius: BorderRadius.circular(100),
         clipBehavior: Clip.hardEdge,
         color: Colors.white,
         child: InkWell(
-          onTap: () {},
+          onTap: onPressed,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Icon(
-              Icons.favorite_border,
+              isFavorite ? Icons.favorite : Icons.favorite_border,
               color: primaryColor,
             ),
           ),

@@ -11,12 +11,18 @@ class GridCard extends StatelessWidget {
     @required this.title,
     this.subtitle,
     this.onPressed,
+    this.favorite = true,
+    this.onFavoritePressed,
+    this.isFavorite = false,
   });
 
+  final bool favorite;
   final String image;
   final String title;
   final String subtitle;
   final VoidCallback onPressed;
+  final VoidCallback onFavoritePressed;
+  final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +91,13 @@ class GridCard extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              right: 10,
-              top: 10,
-              child: favoriteBtn(),
-            ),
+            if (favorite)
+              Positioned(
+                right: 10,
+                top: 10,
+                child: favoriteBtn(
+                    onPressed: onFavoritePressed, isFavorite: isFavorite),
+              ),
           ],
         ),
       ),
@@ -104,12 +112,16 @@ class Card extends StatelessWidget {
     @required this.height,
     this.marginTop = 0,
     this.onPressed,
+    this.onFavoritePressed,
+    this.isFavorite = false,
   }) : super(key: key);
 
   final String img;
   final double height;
   final double marginTop;
   final VoidCallback onPressed;
+  final VoidCallback onFavoritePressed;
+  final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +144,8 @@ class Card extends StatelessWidget {
             Positioned(
               right: 10,
               top: 10,
-              child: favoriteBtn(),
+              child: favoriteBtn(
+                  onPressed: onFavoritePressed, isFavorite: isFavorite),
             ),
           ],
         ),
