@@ -34,15 +34,23 @@ void main() {
 final introPages = [
   PageViewModel(
     title: "Hello niggers",
-    bodyWidget: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Text("Click on "),
-        Icon(Icons.edit),
-        Text(" to edit a post"),
+    bodyWidget: Stack(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text("Click on "),
+            Icon(Icons.edit),
+            Text(" to edit a post"),
+          ],
+        ),
       ],
     ),
-    image: const Center(child: Icon(Icons.android)),
+    image: Image.asset(
+      'assets/images/gs-bg-1.png',
+      height: 1300,
+      fit: BoxFit.cover,
+    ),
   ),
   PageViewModel(
     title: "Hello niggers",
@@ -204,29 +212,52 @@ class _RootPageState extends State<RootPage> {
               label: 'Categories',
             ),
             BottomNavigationBarItem(
-              icon: Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [secondaryColor, primaryColor],
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    shadow(),
-                    if (_index == 2)
-                      BoxShadow(
-                        color: Colors.white.withOpacity(.1),
-                        blurRadius: 0,
-                        spreadRadius: 10,
+              icon: Stack(
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [secondaryColor, primaryColor],
                       ),
-                  ],
-                ),
-                child: Center(
-                  child: buildIcon('location', selected: true, dot: false),
-                ),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Center(
+                      child: buildIcon('location', selected: true, dot: false),
+                    ),
+                  ),
+                  AnimatedOpacity(
+                    opacity: _index == 2 ? 1 : 0,
+                    duration: Duration(milliseconds: 150),
+                    child: Container(
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [secondaryColor, primaryColor],
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                        boxShadow: [
+                          shadow(),
+                          BoxShadow(
+                            color: Colors.white.withOpacity(.1),
+                            blurRadius: 0,
+                            spreadRadius: 10,
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child:
+                            buildIcon('location', selected: true, dot: false),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               label: 'Location',
             ),
@@ -249,28 +280,33 @@ class _RootPageState extends State<RootPage> {
   }
 
   buildIcon(String name, {double size = 60, selected = false, dot = true}) =>
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            'assets/svg/$name.svg',
-            width: size,
-            height: size,
-            fit: BoxFit.cover,
-            color: selected ? Colors.white : secondaryTextColor,
-          ),
-          if (dot)
-            Container(
-              width: 8,
-              height: 8,
-              decoration: selected
-                  ? BoxDecoration(
-                      gradient: gradient,
-                      borderRadius: BorderRadius.circular(100),
-                    )
-                  : null,
+      Container(
+        padding: EdgeInsets.only(bottom: name == 'heart' ? 5 : 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/svg/$name.svg',
+              width: size,
+              height: size,
+              fit: BoxFit.cover,
+              color: selected ? Colors.white : secondaryTextColor,
             ),
-        ],
+            if (dot)
+              AnimatedOpacity(
+                opacity: selected ? 1 : 0,
+                duration: Duration(milliseconds: 200),
+                child: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    gradient: gradient,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+              ),
+          ],
+        ),
       );
 }

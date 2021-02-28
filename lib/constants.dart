@@ -63,3 +63,5 @@ extension IsArabic on BuildContext {
   get isArabic => locale == arabicLocale;
   get isEnglish => locale == englishLocale;
 }
+
+enum ViewMode { grid, list }

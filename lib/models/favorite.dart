@@ -21,6 +21,8 @@ class Favorite {
     this.macAddress,
     this.idFavorites,
     this.images,
+    this.isFavorite,
+    this.likes,
   });
 
   final int itemId;
@@ -40,6 +42,8 @@ class Favorite {
   final String macAddress;
   final int idFavorites;
   final List<ProductImage> images;
+  bool isFavorite;
+  int likes;
 
   factory Favorite.fromJson(String str) => Favorite.fromMap(json.decode(str));
 
@@ -62,6 +66,8 @@ class Favorite {
         idSub: json["idSub"],
         macAddress: json["macAddress"],
         idFavorites: json["idFavorites"],
+        likes: json["likes"],
+        isFavorite: json["isFavorite"],
         images: List<ProductImage>.from(
             json["images"].map((x) => ProductImage.fromMap(x))),
       );
@@ -83,6 +89,8 @@ class Favorite {
         "idSub": idSub,
         "macAddress": macAddress,
         "idFavorites": idFavorites,
+        "likes": likes,
+        "isFavorite": isFavorite,
         "images": List<dynamic>.from(images.map((x) => x.toMap())),
       };
 }

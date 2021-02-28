@@ -1,12 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jewelry_flutter/allah.dart';
 import 'package:jewelry_flutter/constants.dart';
 import 'package:jewelry_flutter/models/product.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../service.dart';
 
@@ -163,7 +163,7 @@ class _ProductPageState extends State<ProductPage> {
                 Row(
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'gold_caliber'.tr().toUpperCase(),
@@ -186,7 +186,7 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                     Spacer(),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'gold_price'.tr().toUpperCase(),
@@ -207,7 +207,7 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                     Spacer(),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'weight'.tr().toUpperCase(),
@@ -216,7 +216,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          product.itemQuantity.toString(),
+                          product.itemQuantity.toString() + 'g',
                           style: TextStyle(
                             fontFamily: 'PlayfairDisplay',
                             letterSpacing: 2,
@@ -249,7 +249,9 @@ class _ProductPageState extends State<ProductPage> {
                           horizontal: 15, vertical: 10),
                       child: InkWell(
                         onTap: () async {
-                          launch('tel:${Application.profile.whats}');
+                          // launch('tel:${Application.profile.whats}');
+                          FlutterOpenWhatsapp.sendSingleMessage(
+                              Application.profile.whats, '');
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

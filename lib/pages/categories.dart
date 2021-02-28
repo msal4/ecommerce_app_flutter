@@ -50,7 +50,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => SubCategoriesPage(),
-                      settings: RouteSettings(arguments: category.idCategory),
+                      settings: RouteSettings(arguments: category),
                     ),
                   );
                 },

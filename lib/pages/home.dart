@@ -20,11 +20,9 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-enum _ViewMode { grid, list }
-
 class _HomePageState extends State<HomePage> {
   bool _menuVisible = false;
-  _ViewMode _viewMode = _ViewMode.list;
+  ViewMode _viewMode = ViewMode.list;
   String _show = 'all';
   final _service = Service();
 
@@ -138,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Icon(Icons.view_agenda_outlined),
                                   Spacer(),
-                                  if (_viewMode == _ViewMode.list)
+                                  if (_viewMode == ViewMode.list)
                                     Container(
                                       height: 3,
                                       color: Colors.white,
@@ -147,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  _viewMode = _ViewMode.list;
+                                  _viewMode = ViewMode.list;
                                 });
                               },
                             ),
@@ -161,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Icon(Icons.grid_view),
                                   Spacer(),
-                                  if (_viewMode == _ViewMode.grid)
+                                  if (_viewMode == ViewMode.grid)
                                     Container(
                                       height: 3,
                                       color: Colors.white,
@@ -170,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  _viewMode = _ViewMode.grid;
+                                  _viewMode = ViewMode.grid;
                                 });
                               },
                             ),
@@ -223,28 +221,38 @@ class _HomePageState extends State<HomePage> {
 
             if (state is ProductsLoaded) {
               return Stack(
+                fit: StackFit.expand,
                 children: [
                   AnimatedCrossFade(
                     duration: const Duration(milliseconds: 100),
-                    firstChild: Column(
-                      children: [
-                        for (int i = 0; i < state.products.length; i++)
-                          card.Card(
-                            isFavorite: state.products[i].isFavorite,
-                            img: state.products[i].images != null &&
-                                    state.products[i].images.length > 0
-                                ? state.products[i].images[0].imagePath
-                                : '',
-                            height: height,
-                            marginTop: i == 0 ? 25 : 0,
-                            onFavoritePressed: () {
-                              onFavoritePressed(state.products[i]);
-                            },
-                            onPressed: () {
-                              navigateToProduct(context, state.products[i]);
-                            },
-                          ),
-                      ],
+                    firstChild: Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: Column(
+                        children: [
+                          for (int i = 0; i < state.products.length; i++)
+                            Container(
+                              height: sliderHeight,
+                              margin: const EdgeInsets.only(bottom: 20),
+                              child: card.GridCard(
+                                image: state.products[i].images != null &&
+                                        state.products[i].images.length > 0
+                                    ? state.products[i].images[0].imagePath
+                                    : '',
+                                title: state.products[i].itemName,
+                                subtitle: state.products[i].categoryName,
+                                onPressed: () {
+                                  navigateToProduct(
+                                      context,
+                                      Product.fromMap(
+                                          state.products[i].toMap()));
+                                },
+                                isFavorite: state.products[i].isFavorite,
+                                onFavoritePressed: () =>
+                                    onFavoritePressed(state.products[i]),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                     secondChild: Container(
                       padding: const EdgeInsets.all(10.0),
@@ -282,7 +290,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                    crossFadeState: _viewMode == _ViewMode.list
+                    crossFadeState: _viewMode == ViewMode.list
                         ? CrossFadeState.showFirst
                         : CrossFadeState.showSecond,
                   ),
@@ -317,11 +325,12 @@ class _HomePageState extends State<HomePage> {
                                   getProducts('recently');
                                 }),
                             buildListTile(
-                                text: 'most'.tr(),
-                                selected: _show == 'most',
-                                onPressed: () {
-                                  getProducts('most');
-                                }),
+                              text: 'most'.tr(),
+                              selected: _show == 'most',
+                              onPressed: () {
+                                getProducts('most');
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -330,6 +339,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               );
             }
+
             return SizedBox();
           },
         )

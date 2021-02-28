@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jewelry_flutter/allah.dart';
 import 'package:jewelry_flutter/bloc/profile/profile_bloc.dart';
@@ -141,59 +142,65 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/svg/snapchat.svg',
-                          color: secondaryColor,
+                  Container(
+                    height: 70,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            'assets/svg/snapchat.svg',
+                            color: secondaryColor,
+                          ),
+                          onPressed: () {
+                            launch('https://www.snapchat.com/add/jalkhafaje9');
+                          },
                         ),
-                        onPressed: () {
-                          launch(state.profile.snapchat);
-                        },
-                      ),
-                      SizedBox(width: 20),
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/svg/whatsapp.svg',
-                          color: secondaryColor,
+                        SizedBox(width: 20),
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            'assets/svg/whatsapp.svg',
+                            color: secondaryColor,
+                          ),
+                          onPressed: () {
+                            FlutterOpenWhatsapp.sendSingleMessage(
+                                Application.profile.whats, '');
+                          },
                         ),
-                        onPressed: () {
-                          launch('tel:${state.profile.whats}');
-                        },
-                      ),
-                      SizedBox(width: 20),
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/svg/instagram.svg',
-                          color: secondaryColor,
+                        SizedBox(width: 20),
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            'assets/svg/instagram.svg',
+                            color: secondaryColor,
+                          ),
+                          onPressed: () {
+                            launch(
+                                'https://www.instagram.com/jewelry.hayder_alkhafaje/');
+                          },
                         ),
-                        onPressed: () {
-                          launch(state.profile.instagram);
-                        },
-                      ),
-                      SizedBox(width: 20),
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/svg/facebook.svg',
-                          color: secondaryColor,
+                        SizedBox(width: 20),
+                        IconButton(
+                          icon: SvgPicture.asset(
+                            'assets/svg/facebook.svg',
+                            color: secondaryColor,
+                          ),
+                          onPressed: () {
+                            launch(
+                                'https://facebook.com/HayderAlkhafajeJewelry');
+                          },
                         ),
-                        onPressed: () {
-                          launch(state.profile.facebook);
-                        },
-                      ),
-                      SizedBox(width: 20),
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/svg/facebook.svg',
-                          color: secondaryColor,
+                        SizedBox(width: 20),
+                        IconButton(
+                          iconSize: 40,
+                          icon: SvgPicture.asset('assets/svg/youtube.svg',
+                              color: secondaryColor),
+                          onPressed: () {
+                            launch(
+                                "https://www.youtube.com/channel/UC4fKH_kihXmKY-7Saeyzg6Q");
+                          },
                         ),
-                        onPressed: () {
-                          launch(state.profile.facebook);
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

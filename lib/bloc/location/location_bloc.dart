@@ -28,9 +28,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         yield LocationError(error: NoInternetException('No Internet'));
       } on HttpException {
         yield LocationError(error: NoServiceFoundException('No Service Found'));
-      } on FormatException {
-        yield LocationError(
-            error: InvalidFormatException('Invalid Response Format'));
       } catch (e) {
         print(e);
         yield LocationError(error: UnknownException('Unknown Error'));

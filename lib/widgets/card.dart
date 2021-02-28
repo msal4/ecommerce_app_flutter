@@ -47,47 +47,45 @@ class GridCard extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color(0xff333333).withOpacity(.7),
-                      Theme.of(context).bottomAppBarColor.withOpacity(.3)
+                      Color(0xff333333),
+                      Theme.of(context).bottomAppBarColor
                     ],
                   ),
                 ),
                 padding: const EdgeInsets.all(15),
                 width: double.infinity,
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title.length > 10
+                          ? title.substring(0, 10) + '...'
+                          : title,
+                      style: TextStyle(
                           fontFamily: 'PlayfairDisplay'.tr(),
                           letterSpacing: 1,
                           fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
-                      ),
-                      if (subtitle != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: Text(
-                            subtitle.toUpperCase(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
-                              color: secondaryColor,
-                            ),
+                          fontSize: 15,
+                          height: 1.3),
+                    ),
+                    if (subtitle != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Text(
+                          subtitle.toUpperCase(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1,
+                            color: secondaryColor,
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
               ),
             ),
