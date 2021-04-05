@@ -2,7 +2,7 @@ PODS:
   - device_info (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - flutter_open_whatsapp (0.0.1):
+  - flutter_launch (0.0.1):
     - Flutter
   - google_maps_flutter (0.0.1):
     - Flutter
@@ -20,7 +20,7 @@ PODS:
 DEPENDENCIES:
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Flutter (from `Flutter`)
-  - flutter_open_whatsapp (from `.symlinks/plugins/flutter_open_whatsapp/ios`)
+  - flutter_launch (from `.symlinks/plugins/flutter_launch/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
@@ -34,8 +34,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info/ios"
   Flutter:
     :path: Flutter
-  flutter_open_whatsapp:
-    :path: ".symlinks/plugins/flutter_open_whatsapp/ios"
+  flutter_launch:
+    :path: ".symlinks/plugins/flutter_launch/ios"
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   shared_preferences:
@@ -46,12 +46,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  flutter_open_whatsapp: 4b54cd5403cfe53414e4252fd52fc27f79635f58
+  flutter_launch: b9912ce1ce9c29df707be74ed8853a99d2ada38f
   google_maps_flutter: c7f9c73576de1fbe152a227bfd6e6c4ae8088619
   GoogleMaps: 4b5346bddfe6911bb89155d43c903020170523ac
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
-PODFILE CHECKSUM: adb00cec7b0eabb3be819164c29b992d03802cb4
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

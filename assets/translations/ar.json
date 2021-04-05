@@ -15,7 +15,7 @@
   "about_us": "عن مجوهرات حيدر الخفاجي",
   "follow_us_on": "تابعنا على",
   "settings": "الاعدادات",
-  "gold_price": "سعر الذهب",
+  "gold_price": "سعر الذهب (د.ع.)",
   "push_notifications": "الاشعارات",
   "enabled": "مفعلة",
   "disabled": "غير مفعلة",
@@ -28,7 +28,7 @@
   "BebasNeue": "HelveticaNeueArabic",
   "Montserrat": "HelveticaNeueArabic",
   "PlayfairDisplay": "HelveticaNeueArabic",
-  "weight": "الوزن",
+  "weight": "الوزن (غ)",
   "gold_caliber": "القيراط",
   "order_now": "اطلب الان"
 }

@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
+import 'package:flutter_launch/flutter_launch.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jewelry_flutter/allah.dart';
 import 'package:jewelry_flutter/constants.dart';
@@ -38,8 +38,7 @@ class _ProductPageState extends State<ProductPage> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: SvgPicture.asset('assets/svg/logo_bare.svg',
-            color: Colors.white, height: kToolbarHeight - 30),
+        title: SvgPicture.asset('assets/svg/logo_bare.svg', color: Colors.white, height: kToolbarHeight - 30),
         actions: [
           Row(
             children: [
@@ -53,16 +52,11 @@ class _ProductPageState extends State<ProductPage> {
               ),
               IconButton(
                 color: secondaryColor,
-                icon: Icon(product.isFavorite
-                    ? Icons.favorite_rounded
-                    : Icons.favorite_outline),
+                icon: Icon(product.isFavorite ? Icons.favorite_rounded : Icons.favorite_outline),
                 onPressed: () {
-                  _service.addFavorite(
-                      itemId: product.idItem, itemLikes: product.itemLike);
+                  _service.addFavorite(itemId: product.idItem, itemLikes: product.itemLike);
                   product.isFavorite = !product.isFavorite;
-                  product.likes = product.isFavorite
-                      ? product.likes + 1
-                      : product.likes - 1;
+                  product.likes = product.isFavorite ? product.likes + 1 : product.likes - 1;
                   setState(() {});
                   if (widget.onFavorite != null) widget.onFavorite();
                 },
@@ -113,9 +107,7 @@ class _ProductPageState extends State<ProductPage> {
                               decoration: BoxDecoration(
                                 border: Border.all(color: secondaryColor),
                                 borderRadius: BorderRadius.circular(100),
-                                gradient: _currentImageIndex == i
-                                    ? horizontalGradient
-                                    : null,
+                                gradient: _currentImageIndex == i ? horizontalGradient : null,
                               ),
                               width: 15,
                               height: 15,
@@ -135,14 +127,11 @@ class _ProductPageState extends State<ProductPage> {
               children: [
                 Text(
                   product.itemName,
-                  style: TextStyle(
-                      fontFamily: 'PlayfairDisplay'.tr(), fontSize: 35),
+                  style: TextStyle(fontFamily: 'PlayfairDisplay'.tr(), fontSize: 35),
                 ),
                 SizedBox(height: 5),
                 Text(
-                  context.isArabic
-                      ? product.categoryName
-                      : product.categoryNameEn,
+                  context.isArabic ? product.categoryName : product.categoryNameEn,
                   style: TextStyle(
                     fontFamily: 'BebasNeue'.tr(),
                     fontSize: 15,
@@ -190,8 +179,7 @@ class _ProductPageState extends State<ProductPage> {
                       children: [
                         Text(
                           'gold_price'.tr().toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                         ),
                         SizedBox(height: 5),
                         Text(
@@ -211,12 +199,11 @@ class _ProductPageState extends State<ProductPage> {
                       children: [
                         Text(
                           'weight'.tr().toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w500),
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          product.itemQuantity.toString() + 'g',
+                          product.itemQuantity.toString(),
                           style: TextStyle(
                             fontFamily: 'PlayfairDisplay',
                             letterSpacing: 2,
@@ -245,13 +232,11 @@ class _ProductPageState extends State<ProductPage> {
                       borderRadius: BorderRadius.circular(800),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       child: InkWell(
                         onTap: () async {
                           // launch('tel:${Application.profile.whats}');
-                          FlutterOpenWhatsapp.sendSingleMessage(
-                              Application.profile.whats, '');
+                          FlutterLaunch.launchWathsApp(message: Application.profile.whats, phone: '');
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

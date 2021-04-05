@@ -15,7 +15,7 @@
   "about_us": "About Us",
   "follow_us_on": "Follow Us On",
   "settings": "Settings",
-  "gold_price": "Gold Price",
+  "gold_price": "Gold Price (IQD)",
   "push_notifications": "Push Notifications",
   "enabled": "Enabled",
   "disabled": "Disabled",
@@ -28,7 +28,7 @@
   "BebasNeue": "BebasNeue",
   "Montserrat": "Montserrat",
   "PlayfairDisplay": "PlayfairDisplay",
-  "weight": "Weight",
+  "weight": "Weight (g)",
   "gold_caliber": "Gold Caliber",
   "order_now": "Order Now"
 }

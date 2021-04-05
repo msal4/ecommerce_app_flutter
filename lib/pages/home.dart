@@ -45,7 +45,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final height = size.width / 2;
     final sliderHeight = size.width / 1.7;
 
     return ListView(
@@ -184,6 +183,8 @@ class _HomePageState extends State<HomePage> {
         ),
         BlocBuilder<ProductBloc, ProductState>(
           builder: (context, state) {
+            print('----------home state----------');
+            print(state);
             if (state is ProductLoading) {
               return Align(
                 alignment: Alignment.topCenter,
@@ -221,7 +222,7 @@ class _HomePageState extends State<HomePage> {
 
             if (state is ProductsLoaded) {
               return Stack(
-                fit: StackFit.expand,
+                // fit: StackFit.expand,
                 children: [
                   AnimatedCrossFade(
                     duration: const Duration(milliseconds: 100),

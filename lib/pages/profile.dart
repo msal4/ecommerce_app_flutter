@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
+import 'package:flutter_launch/flutter_launch.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jewelry_flutter/allah.dart';
 import 'package:jewelry_flutter/bloc/profile/profile_bloc.dart';
@@ -51,8 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 10),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25),
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: horizontalGradient,
@@ -71,9 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    context.isArabic
-                        ? state.profile.aboutUs
-                        : state.profile.aboutUsEn,
+                    context.isArabic ? state.profile.aboutUs : state.profile.aboutUsEn,
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -163,8 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: secondaryColor,
                           ),
                           onPressed: () {
-                            FlutterOpenWhatsapp.sendSingleMessage(
-                                Application.profile.whats, '');
+                            FlutterLaunch.launchWathsApp(message: Application.profile.whats, phone: '');
                           },
                         ),
                         SizedBox(width: 20),
@@ -174,8 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: secondaryColor,
                           ),
                           onPressed: () {
-                            launch(
-                                'https://www.instagram.com/jewelry.hayder_alkhafaje/');
+                            launch('https://www.instagram.com/jewelry.hayder_alkhafaje/');
                           },
                         ),
                         SizedBox(width: 20),
@@ -185,18 +180,15 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: secondaryColor,
                           ),
                           onPressed: () {
-                            launch(
-                                'https://facebook.com/HayderAlkhafajeJewelry');
+                            launch('https://facebook.com/HayderAlkhafajeJewelry');
                           },
                         ),
                         SizedBox(width: 20),
                         IconButton(
                           iconSize: 40,
-                          icon: SvgPicture.asset('assets/svg/youtube.svg',
-                              color: secondaryColor),
+                          icon: SvgPicture.asset('assets/svg/youtube.svg', color: secondaryColor),
                           onPressed: () {
-                            launch(
-                                "https://www.youtube.com/channel/UC4fKH_kihXmKY-7Saeyzg6Q");
+                            launch("https://www.youtube.com/channel/UC4fKH_kihXmKY-7Saeyzg6Q");
                           },
                         ),
                       ],
