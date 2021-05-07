@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:introduction_screen/introduction_screen.dart';
 import 'package:jewelry_flutter/bloc/location/location_bloc.dart';
 import 'package:jewelry_flutter/bloc/product/product_bloc.dart';
 import 'package:jewelry_flutter/bloc/profile/profile_bloc.dart';
@@ -21,7 +20,7 @@ import 'bloc/category/category_bloc.dart';
 import 'bloc/favorite/favorite_bloc.dart';
 import 'bloc/sub_category/category_bloc.dart';
 
-void main() {
+void main() async {
   runApp(
     EasyLocalization(
       supportedLocales: [arabicLocale, englishLocale],
@@ -30,53 +29,6 @@ void main() {
     ),
   );
 }
-
-final introPages = [
-  PageViewModel(
-    title: "Hello niggers",
-    bodyWidget: Stack(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text("Click on "),
-            Icon(Icons.edit),
-            Text(" to edit a post"),
-          ],
-        ),
-      ],
-    ),
-    image: Image.asset(
-      'assets/images/gs-bg-1.png',
-      height: 1300,
-      fit: BoxFit.cover,
-    ),
-  ),
-  PageViewModel(
-    title: "Hello niggers",
-    bodyWidget: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Text("Click on "),
-        Icon(Icons.edit),
-        Text(" to edit a post"),
-      ],
-    ),
-    image: const Center(child: Icon(Icons.android)),
-  ),
-  PageViewModel(
-    title: "Hello niggers",
-    bodyWidget: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Text("Click on "),
-        Icon(Icons.edit),
-        Text(" to edit a post"),
-      ],
-    ),
-    image: const Center(child: Icon(Icons.android)),
-  ),
-];
 
 class App extends StatelessWidget {
   @override
@@ -106,30 +58,11 @@ class App extends StatelessWidget {
                       : ThemeData.light())
                   .textTheme
                   .apply(
-                      fontFamily: context.isArabic
-                          ? 'HelveticaNeueArabic'
-                          : 'Montserrat'),
-            ),
-            home: true
-                ? RootPage()
-                : Builder(
-                    builder: (context) {
-                      return IntroductionScreen(
-                        pages: introPages,
-                        showNextButton: true,
-                        next: const Text('NEXT'),
-                        dotsDecorator:
-                            DotsDecorator(activeColor: secondaryColor),
-                        done: const Text("GET STARTED",
-                            style: TextStyle(fontWeight: FontWeight.w600)),
-                        onDone: () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => RootPage()));
-                        },
-                      );
-                    },
+                    fontFamily:
+                        context.isArabic ? 'HelveticaNeueArabic' : 'Montserrat',
                   ),
+            ),
+            home: RootPage(),
           );
         },
       ),

@@ -92,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Text('\$${state.profile.dollarPrice}'),
+                  Text('${state.profile.dollarPrice}'),
                   SizedBox(height: 30),
                   Text(
                     'contact_us'.tr(),
@@ -160,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: secondaryColor,
                           ),
                           onPressed: () {
-                            FlutterLaunch.launchWathsApp(message: Application.profile.whats, phone: '');
+                            FlutterLaunch.launchWathsApp(phone: Application.profile.whats, message: '');
                           },
                         ),
                         SizedBox(width: 20),

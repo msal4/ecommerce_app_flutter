@@ -236,7 +236,7 @@ class _ProductPageState extends State<ProductPage> {
                       child: InkWell(
                         onTap: () async {
                           // launch('tel:${Application.profile.whats}');
-                          FlutterLaunch.launchWathsApp(message: Application.profile.whats, phone: '');
+                          FlutterLaunch.launchWathsApp(phone: Application.profile.whats, message: '');
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
